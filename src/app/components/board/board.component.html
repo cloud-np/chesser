@@ -1,0 +1,3 @@
+<div class="board" *ngFor="let row of rows; let i = index">
+    <app-row [changeColor]="i % 2 === 0 ? 0 : 1"></app-row>
+</div>
