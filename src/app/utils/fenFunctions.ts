@@ -10,9 +10,7 @@ export const fenTranslator = (fen: string): BoardState => {
         return new Tile((square + changeRowStartingColor) % 2 === 0, square)
     }));
 
-
     let square = 0;
-    let changeRowStartingColor = 0;
     pieces.split('/').map((row) => {
         row.split('').map((piece) => {
             if (isNaN(parseInt(piece))) {
@@ -26,6 +24,7 @@ export const fenTranslator = (fen: string): BoardState => {
             }
         });
     });
+
     return {
         fen: fen,
         boardRows: boardRows,

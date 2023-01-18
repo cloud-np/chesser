@@ -5,14 +5,16 @@ import { Tile } from 'src/app/tile.model';
 @Component({
   selector: 'app-square',
   template: `
-  <div class="square" [ngStyle]="{'height': squareSize + 'px', 'width': squareSize + 'px'}" [ngClass]="tile?.isWhite ? 'white' : 'not-white'">
-    <img cdkDragBoundary=".board" cdkDrag class="non-empty" *ngIf="tile?.piece?.type !== 'empty'" [style.width.px]="squareSize" [src]="imgSrc"/>
+  <div class="square" (click)="handleClick($event)" 
+    (pieceClicked)="onPieceClicked($event)"
+    [ngStyle]="{'height': squareSize + 'px', 'width': squareSize + 'px'}" [ngClass]="tile?.isWhite ? 'white' : 'not-white'">
+    <app-piece [squareSize]="squareSize" [piece]="tile?.piece"></app-piece>
   </div>
   `,
+  // <img cdkDragBoundary=".board" cdkDrag class="non-empty" *ngIf="tile?.piece?.type !== 'empty'" [style.width.px]="squareSize" [src]="imgSrc"/>
   styleUrls: ['./square.component.sass']
 })
 export class SquareComponent implements OnInit {
-
 
   @Input() tile: Tile | null = null;
 
@@ -23,6 +25,14 @@ export class SquareComponent implements OnInit {
     this.boardUiService.getBoardSize().subscribe((size) => {
       this.squareSize = Math.floor(size / 8);
     });
+  }
+
+  onPieceClicked(event: any){
+    console.log("piece clicked", event);
+  }
+
+  handleClick(event: any){
+    event.target.innerHTML += "clicked";
   }
 
   ngOnInit(): void {
