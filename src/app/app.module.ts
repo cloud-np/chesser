@@ -7,10 +7,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SquareComponent } from './components/square/square.component';
 import { BoardComponent } from './components/board/board.component';
-import { RowComponent } from './components/row/row.component';
 import { FormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { PieceComponent } from './components/piece/piece.component';
 
 
 @NgModule({
@@ -18,8 +16,6 @@ import { PieceComponent } from './components/piece/piece.component';
     AppComponent,
     SquareComponent,
     BoardComponent,
-    RowComponent,
-    PieceComponent
   ],
   imports: [
     BrowserModule,

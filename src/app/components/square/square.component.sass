@@ -1,14 +1,25 @@
 .square
     background: #769656
+    position: relative
     float: left
     font-size: 24px
-    height: 80px
-    width: 80px
     padding: 0
     margin: 0
 
-.non-empty
+.piece
+    position: absolute
+
+.clickable
+    cursor: pointer
+
+.non-empty-grab
     cursor: grab
+
+.clicked
+    opacity: .7
+    content: ""
+    position: absolute 
+    background: #dada85ac
 
 .white
     background: #eeeed2

@@ -1,8 +1,8 @@
-import { Tile } from "./tile.model";
+import { Tile } from "./models/tile.model";
 
 export interface BoardState {
     fen: string;
-    boardRows: Tile[][];
+    tiles: Tile[];
     deadPieces: string[];
     moves: string[];
 }
