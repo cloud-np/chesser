@@ -1,0 +1,15 @@
+{
+  "name": "t18",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "docker:build": "docker-compose -p chesser build",
+    "docker:up": "docker-compose -p chesser up --force-recreate",
+    "docker:down": "docker-compose -p chesser down",
+    "docker:down:volumes": "docker-compose -p chesser down --volumes"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
