@@ -49,7 +49,6 @@ app.post("/login", (req, res) => {
     console.log(`${username} is trying to login ..`);
 
     return res.json({ token: jwt.sign(username, process.env.JWT_ACCESS_TOKEN) });
-
 });
 
 const PORT = process.env.PORT || 5000;
