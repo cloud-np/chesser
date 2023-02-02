@@ -5,7 +5,9 @@
         <button (click)="resetFen()">Reset Fen</button>
         <input type="text" name="userFen" [(ngModel)]="userFen" />
         <button (click)="setFen()">Set Fen</button>
+        <a routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page">Go to login</a>
     </div>
+
     <!-- <div>{{(boardState$ | async)?.boardRows}}</div> <div *ngFor="let row of (boardState$ | async)?.boardRows; let i = index">{{row}}</div> -->
     <app-square *ngFor="let tile of (boardState$ | async)?.tiles; let i = index" [tile]="tile" #sq [attr.name]="tile.squareName"></app-square>
 </div>

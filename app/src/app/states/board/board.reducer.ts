@@ -12,5 +12,5 @@ export const boardReducer = createReducer(
         const moves = [...state.moves, move];
         return { ...state, moves };
     }),
-    on(setFen, (state, { fen }) => (fenTranslator(fen))),
+    on(setFen, (_, { fen }) => (fenTranslator(fen))),
 );

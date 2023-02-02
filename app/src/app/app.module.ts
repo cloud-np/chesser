@@ -7,8 +7,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SquareComponent } from './components/square/square.component';
 import { BoardComponent } from './components/board/board.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { HttpClientModule } from '@angular/common/http';
+import { authReducer } from './states/auth/auth.reducer';
+import { LandingPageComponent } from './components/landing-page/landing-page.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
 
 
 @NgModule({
@@ -16,13 +21,18 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     AppComponent,
     SquareComponent,
     BoardComponent,
+    LandingPageComponent,
+    LoginComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    ReactiveFormsModule,
     DragDropModule,
-    StoreModule.forRoot({board: boardReducer }),
+    StoreModule.forRoot({board: boardReducer, auth: authReducer }),
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

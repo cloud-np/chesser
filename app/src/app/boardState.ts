@@ -6,3 +6,8 @@ export interface BoardState {
     deadPieces: string[];
     moves: string[];
 }
+
+export interface AuthState {
+    token: string;
+}
+
