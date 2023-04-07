@@ -1,20 +1,22 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { Move } from 'src/app/models/move.model';
 import { BoardUiService } from 'src/app/services/board-ui.service';
 import { Tile } from 'src/app/models/tile.model';
+import { map, startWith, tap } from 'rxjs';
 
 @Component({
   selector: 'app-square',
   template: `
   <div [id]="this.tile?.squareName" class="square" (click)="onTileClicked()" 
-       [ngStyle]="squareDims"
+       [ngStyle]="{height: (squareSize$ | async) + 'px', width: (squareSize$ | async) + 'px'}"
        [ngClass]="[color]">
-    <span [id]="this.tile?.squareName + 'spanBefore'" class="clicked::before" [ngClass]="tileClickedColor" [ngStyle]="squareDims"></span>
+    <span [id]="this.tile?.squareName + 'spanBefore'" class="clicked::before" [ngClass]="tileClickedColor" 
+       [ngStyle]="{height: (squareSize$ | async) + 'px', width: (squareSize$ | async) + 'px'}"></span>
 
     <img 
       class="piece clickable"
       *ngIf="tile?.piece?.type !== 'empty'"
-      [style.width.px]="squareSize"
+      [style.width.px]="squareSize$ | async"
       [src]="imgSrc"
     />
   </div>
@@ -23,20 +25,23 @@ import { Tile } from 'src/app/models/tile.model';
 })
 export class SquareComponent implements OnInit {
 
+  private boardUiService: BoardUiService = inject(BoardUiService);
+
   @Input() tile: Tile | null = null;
 
   imgSrc: string = '';
   color: string = '';
   tileClickedColor: string = '';
-  squareSize: number = 80;
+  squareSize$ = this.boardUiService.getBoardSize()
+                .pipe(
+                  startWith(640), 
+                  map(bSize => Math.floor(bSize / 8)),
+                  tap(b => console.log(b))
+                );
   lastMove: Move | null = null;
-  squareDims = { height: this.squareSize + 'px', width: this.squareSize + 'px' }
   pickedTile: Tile | null = null;
 
-  constructor(private boardUiService: BoardUiService) {
-    this.boardUiService.getBoardSize().subscribe((size) => {
-      this.squareSize = Math.floor(size / 8);
-    });
+  constructor() {
     this.boardUiService.getPickedTile().subscribe((pickInfo) => {
       this.pickedTile = pickInfo;
     });

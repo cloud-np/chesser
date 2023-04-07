@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, startWith } from 'rxjs';
 import { Move } from '../models/move.model';
 import { Tile } from '../models/tile.model';
 
@@ -38,7 +38,7 @@ export class BoardUiService {
   }
 
   getBoardSize(): Observable<number> {
-    return this.boardSize.asObservable();
+    return this.boardSize.asObservable().pipe(startWith(this.STARTING_BOARD_SIZE));
   }
 
   addBoardSize(addSize: number): void {

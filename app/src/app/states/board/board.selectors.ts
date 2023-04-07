@@ -1,4 +1,4 @@
-import { createSelector } from "@ngrx/store";
+import { createFeatureSelector, createSelector } from "@ngrx/store";
 import { BoardState } from "../../boardState";
 import { AppState } from "../app.state";
 
