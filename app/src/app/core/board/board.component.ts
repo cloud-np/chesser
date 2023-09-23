@@ -1,5 +1,5 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { Observable, of, startWith, tap } from 'rxjs';
+import { Component, inject } from '@angular/core';
+import { Observable } from 'rxjs';
 import { BoardUiService } from 'src/app/services/board-ui.service';
 import { Store } from '@ngrx/store';
 import { selectBoardState } from 'src/app/states/board/board.selectors';
@@ -7,22 +7,14 @@ import { BoardState } from 'src/app/boardState';
 import { setFen } from 'src/app/states/board/board.actions';
 import { AppState } from 'src/app/states/app.state';
 
+
+const DEFAULT_FEN: string = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
+
 @Component({
   selector: 'app-board',
-  // templateUrl: './board.component.html',
-  template: `
-  <div class="board" [ngStyle]="{'width': (boardSize$ | async) + 'px', 'height': (boardSize$ | async)! + 30 + 'px'}">
-      <div class="controlls">
-          <button (click)="removeBoardSize()">Down</button>
-          <button (click)="addBoardSize()">Up</button>
-          <button (click)="resetFen()">Reset Fen</button>
-          <input type="text" name="givenFen" [(ngModel)]="givenFen" />
-          <button (click)="setFen()">Set Fen</button>
-      </div>
-      <app-square *ngFor="let tile of (boardState$ | async)?.tiles; let i = index" [tile]="tile" #sq [attr.name]="tile.squareName"></app-square>
-  </div>
-  `,
-  styleUrls: ['./board.component.sass'],
+  templateUrl: './board.component.html',
+  // template: ``,
+  styleUrls: ['./board.component.scss'],
 })
 export class BoardComponent {
 
@@ -47,6 +39,6 @@ export class BoardComponent {
   }
 
   resetFen(): void {
-    this.store.dispatch(setFen({fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'}));
+    this.store.dispatch(setFen({ fen: DEFAULT_FEN }));
   }
 }

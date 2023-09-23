@@ -1,4 +1,4 @@
-import { Tile } from "./models/tile.model";
+import { Tile } from "./core/tile/tile.model";
 
 export interface BoardState {
     fen: string;

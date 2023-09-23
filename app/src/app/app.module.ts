@@ -5,8 +5,8 @@ import { boardReducer } from './states/board/board.reducer';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SquareComponent } from './components/square/square.component';
-import { BoardComponent } from './components/board/board.component';
+import { SquareComponent } from './core/square/square.component';
+import { BoardComponent } from './core/board/board.component';
 import { FormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 

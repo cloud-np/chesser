@@ -1,0 +1,10 @@
+<div class="board" [ngStyle]="{'width': (boardSize$ | async) + 'px', 'height': (boardSize$ | async)! + 30 + 'px'}">
+  <div class="controlls">
+      <button (click)="removeBoardSize()">Down</button>
+      <button (click)="addBoardSize()">Up</button>
+      <button (click)="resetFen()">Reset Fen</button>
+      <input type="text" name="givenFen" [(ngModel)]="givenFen" />
+      <button (click)="setFen()">Set Fen</button>
+  </div>
+  <app-square *ngFor="let tile of (boardState$ | async)?.tiles; let i = index" [tile]="tile" #sq [attr.name]="tile.squareName"></app-square>
+</div>
