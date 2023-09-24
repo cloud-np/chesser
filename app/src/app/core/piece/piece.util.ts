@@ -1,10 +1,10 @@
-import { Piece } from "./piece.model";
+import { Piece, PieceType } from "./piece.model";
 
 export namespace PieceUtil {
 
     export const empty = (): Piece => {
         return {
-            type: "empty",
+            type: PieceType.Empty,
             imgName: "",
             isWhite: false
         };
@@ -14,73 +14,73 @@ export namespace PieceUtil {
         switch (piece) {
             case "P":
                 return {
-                    type: "pawn",
+                    type: PieceType.Pawn,
                     imgName: "wp.png",
                     isWhite: true
                 };
             case "R":
                 return {
-                    type: "rook",
+                    type: PieceType.Rook,
                     imgName: "wr.png",
                     isWhite: true
                 };
             case "N":
                 return{
-                    type: "knight",
+                    type: PieceType.Knight,
                     imgName: "wn.png",
                     isWhite: true
                 };
             case "B":
                 return {
-                    type: "bishop",
+                    type: PieceType.Bishop,
                     imgName: "wb.png",
                     isWhite: true
                 };
             case "Q":
                 return {
-                    type: "queen",
+                    type: PieceType.Queen,
                     imgName: "wq.png",
                     isWhite: true
                 };
             case "K":
                 return {
-                    type: "king",
+                    type: PieceType.King,
                     imgName: "wk.png",
                     isWhite: true
                 };
             case "p":
                 return {
-                    type: "pawn",
+                    type: PieceType.Pawn,
                     imgName: "bp.png",
                     isWhite: false
                 };
             case "r":
                 return {
-                    type: "rook",
+                    type: PieceType.Rook,
                     imgName: "br.png",
                     isWhite: false
                 };
             case "n":
                 return {
-                    type: "knight",
+                    type: PieceType.Knight,
                     imgName: "bn.png",
                     isWhite: false
                 };
             case "b":
                 return {
-                    type: "bishop",
+                    type: PieceType.Bishop,
                     imgName: "bb.png",
                     isWhite: false
                 };
             case "q":
                 return {
-                    type: "queen",
+                    type: PieceType.Queen,
                     imgName: "bq.png",
                     isWhite: false
                 };
             case "k":
                 return {
-                    type: "king",
+                    type: PieceType.King,
                     imgName: "bk.png",
                     isWhite: false
                 };

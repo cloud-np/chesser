@@ -3,7 +3,8 @@
       <button (click)="removeBoardSize()">Down</button>
       <button (click)="addBoardSize()">Up</button>
       <button (click)="resetFen()">Reset Fen</button>
-      <input type="text" name="givenFen" [(ngModel)]="givenFen" />
+      <!-- TODO: Check this line again it used to be givenFen -->
+      <input type="text" name="givenFen" [(ngModel)]="userFen" />
       <button (click)="setFen()">Set Fen</button>
   </div>
   <app-square *ngFor="let tile of (boardState$ | async)?.tiles; let i = index" [tile]="tile" #sq [attr.name]="tile.squareName"></app-square>

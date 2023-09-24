@@ -5,6 +5,7 @@ import { Move } from '../move/move.model';
 import { MoveUtil } from '../move/move.util';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Tile } from '../tile/tile.model';
+import { PieceType } from '../piece/piece.model';
 
 @UntilDestroy()
 @Component({
@@ -26,13 +27,11 @@ export class SquareComponent implements OnInit {
         .pipe(
             startWith(640),
             map(bSize => Math.floor(bSize / 8)),
-            tap(b => console.log(b))
         );
     lastMove: Move | undefined;
     pickedTile: Tile | undefined;
 
-    constructor() {
-    }
+    constructor() { }
 
     onTileClicked() {
 
@@ -42,8 +41,8 @@ export class SquareComponent implements OnInit {
 
         if (!this.pickedTile) {
             // If the tile is empty, do nothing
-            if (this.tile?.piece?.type === 'empty') {
-                return;
+            if (this.tile.piece?.type === PieceType.Empty) {
+               return;
             }
 
             this.tileClickedColor = 'clicked';
