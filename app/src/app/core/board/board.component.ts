@@ -41,4 +41,8 @@ export class BoardComponent {
   resetFen(): void {
     this.store.dispatch(setFen({ fen: DEFAULT_FEN }));
   }
+
+  ngOnDestroy(): void {
+    // this.boardSize$?.unsubscribe();
+  }
 }

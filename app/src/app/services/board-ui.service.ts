@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Observable, Subject, startWith, tap } from 'rxjs';
+import { Observable, startWith, Subject, tap } from 'rxjs';
 import { Move } from '../core/move/move.model';
 import { Tile } from '../core/tile/tile.model';
 
