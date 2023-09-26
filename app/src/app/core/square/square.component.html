@@ -1,13 +1,15 @@
-<div [id]="this.tile?.squareName" class="square" (click)="onTileClicked()"
-   [ngStyle]="{height: (squareSize$ | async) + 'px', width: (squareSize$ | async) + 'px'}"
-   [ngClass]="[color]">
-<span [id]="this.tile?.squareName + 'spanBefore'" class="clicked::before" [ngClass]="tileClickedColor"
-   [ngStyle]="{height: (squareSize$ | async) + 'px', width: (squareSize$ | async) + 'px'}"></span>
+<ng-container *ngrLet="squareSize$ as squareSize">
+    <div [id]="this.tile?.squareName" class="square" (click)="onTileClicked()"
+       [ngStyle]="{ height: squareSize + 'px', width: squareSize + 'px' }"
+       [ngClass]="[color]">
+    <span [id]="this.tile?.squareName + 'spanBefore'" class="clicked::before" [class.clicked]="hasTileClicked"
+       [ngStyle]="{ height: squareSize + 'px', width: squareSize + 'px' }"></span>
 
-<img
-  class="piece clickable"
-  *ngIf="tile?.piece?.type !== 'empty'"
-  [style.width.px]="squareSize$ | async"
-  [src]="imgSrc"
-/>
-</div>
+    <img
+      class="piece clickable"
+      *ngIf="tile?.piece?.type !== 'empty'"
+      [style.width.px]="squareSize"
+      [src]="imgSrc"
+    />
+    </div>
+</ng-container>
