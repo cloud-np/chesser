@@ -30,11 +30,11 @@ export class SquareComponent implements OnInit {
         );
     lastMove: Move | undefined;
     pickedTile: Tile | undefined;
+    hasTileClicked: boolean = false;
 
     constructor() { }
 
     onTileClicked() {
-
         if (!this.tile) {
             return;
         }
