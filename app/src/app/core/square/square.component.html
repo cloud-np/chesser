@@ -1,8 +1,10 @@
-<ng-container *ngrLet="squareSize$ as squareSize">
-    <div [id]="this.tile?.squareName" class="square" (click)="onTileClicked()"
+<ng-container *ngrxLet="squareSize$ as squareSize">
+    <div [id]="this.tile?.squareName" class="square"
+       (click)="onTileClicked()"
        [ngStyle]="{ height: squareSize + 'px', width: squareSize + 'px' }"
        [ngClass]="[color]">
-    <span [id]="this.tile?.squareName + 'spanBefore'" class="clicked::before" [class.clicked]="hasTileClicked"
+
+    <span [id]="this.tile?.squareName + 'spanBefore'" class="clicked::before" [class.clicked]="wasTileClicked"
        [ngStyle]="{ height: squareSize + 'px', width: squareSize + 'px' }"></span>
 
     <img

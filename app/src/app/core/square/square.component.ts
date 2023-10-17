@@ -26,11 +26,11 @@ export class SquareComponent implements OnInit {
     squareSize$ = this.boardUiService.getBoardSize()
         .pipe(
             startWith(640),
-            map(bSize => Math.floor(bSize / 8)),
+            map((bSize: number) => Math.floor(bSize / 8)),
         );
     lastMove: Move | undefined;
     pickedTile: Tile | undefined;
-    hasTileClicked: boolean = false;
+    wasTileClicked: boolean = false;
 
     constructor() { }
 
