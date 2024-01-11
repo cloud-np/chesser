@@ -2,10 +2,10 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BoardUiService } from 'src/app/services/board-ui.service';
 import { Store } from '@ngrx/store';
-import { selectBoardState } from 'src/app/states/board/board.selectors';
+import { selectBoardState } from 'src/app/store/board/board.selectors';
 import { BoardState } from 'src/app/boardState';
 import { setFen } from 'src/app/states/board/board.actions';
-import { AppState } from 'src/app/states/app.state';
+import { AppState } from 'src/app/store/app.state';
 
 
 const DEFAULT_FEN: string = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';

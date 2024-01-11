@@ -11,5 +11,5 @@ export const authReducer = createReducer(
     on(login, (state, { token }) => {
         return { ...state, token };
     }),
-    on(logout, (_) => ({token: ''}))
+    on(logout, (_) => ({ token: '' }))
 )
