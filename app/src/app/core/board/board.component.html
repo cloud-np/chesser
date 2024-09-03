@@ -11,7 +11,9 @@
     <h1>Bobby Fischer vs Boris Spassky</h1>
     <p>Game 6, from World Championship match 1972.</p>
     <div class="board-tiles">
-        <app-square *ngFor="let tile of (boardState$ | async)?.tiles; let i = index" [tile]="tile" #sq [attr.name]="tile.squareName"></app-square>
+        @for (tile of (boardState$ | async)?.tiles; track tile.square; let i = $index) {
+            <app-square [tile]="tile" #sq [attr.name]="tile.squareName"></app-square>
+        }
     </div>
     </div>
 </div>

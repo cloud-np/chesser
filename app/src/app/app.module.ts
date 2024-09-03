@@ -14,23 +14,29 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { CommonModule } from '@angular/common';
-import { LetDirective } from '@ngrx/component';
+import { RouterModule } from '@angular/router';
 
 
-@NgModule({ declarations: [
+@NgModule({
+    declarations: [
         AppComponent,
-        SquareComponent,
         BoardComponent,
         LandingPageComponent,
         LoginComponent,
         RegisterComponent,
     ],
-    bootstrap: [AppComponent], imports: [BrowserModule,
+    bootstrap: [AppComponent],
+    imports: [
+        BrowserModule,
+        RouterModule.forRoot([]),
         AppRoutingModule,
         FormsModule,
+        SquareComponent,
         ReactiveFormsModule,
         StoreModule.forRoot({ board: boardReducer, auth: authReducer }),
-        CommonModule,
-        LetDirective], providers: [provideHttpClient(withInterceptorsFromDi())] })
+        CommonModule
+    ],
+    providers: [provideHttpClient(withInterceptorsFromDi())]
+})
 export class AppModule {
 }

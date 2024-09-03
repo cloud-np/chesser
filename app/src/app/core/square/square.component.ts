@@ -5,11 +5,14 @@ import { Move } from '../move/move.model';
 import { MoveUtil } from '../move/move.util';
 import { Tile } from '../tile/tile.model';
 import { PieceType } from '../piece/piece.model';
+import { NgClass, NgIf, NgStyle } from '@angular/common';
 
 @Component({
     selector: 'app-square',
     templateUrl: './square.component.html',
     // template: ` `,
+    standalone: true,
+    imports: [NgStyle, NgClass, NgIf],
     styleUrls: ['./square.component.scss']
 })
 export class SquareComponent implements OnInit {
