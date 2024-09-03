@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 import { SquareComponent } from './core/square/square.component';
 import { BoardComponent } from './core/board/board.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { authReducer } from './store/auth/auth.reducer';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { LoginComponent } from './components/login/login.component';
@@ -17,8 +17,7 @@ import { CommonModule } from '@angular/common';
 import { LetDirective } from '@ngrx/component';
 
 
-@NgModule({
-    declarations: [
+@NgModule({ declarations: [
         AppComponent,
         SquareComponent,
         BoardComponent,
@@ -26,18 +25,12 @@ import { LetDirective } from '@ngrx/component';
         LoginComponent,
         RegisterComponent,
     ],
-    imports: [
-        BrowserModule,
+    bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,
         FormsModule,
         ReactiveFormsModule,
         StoreModule.forRoot({ board: boardReducer, auth: authReducer }),
-        HttpClientModule,
         CommonModule,
-        LetDirective
-    ],
-    providers: [],
-    bootstrap: [AppComponent]
-})
+        LetDirective], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule {
 }
