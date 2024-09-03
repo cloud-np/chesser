@@ -1,7 +1,21 @@
+.board-container {
+    justify-content: center;
+    display: flex;
+}
+
 .board {
-    $boardSize: 640px;
-    width: $boardSize;
-    height: $boardSize + 30px;
+    // $boardSize: 640px;
+    // width: $boardSize;
+    height: auto;
+
+    h1, p {
+        color: white;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    h1 {
+        margin-bottom: 0;
+    }
 }
 
 .boardBorders {
@@ -12,13 +26,21 @@
 
 .controlls {
     display: flex;
-    margin: 10px 0;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 80px;
 
     button {
-        padding: 10px;
+        padding: 12px;
         margin: 0 5px;
         background: #fff;
         border: 1px solid #000;
         border-radius: 5px;
+        transition: all .5s ease;
+    }
+
+    button:hover {
+        cursor: pointer;
+        background: #d6d6d6;
     }
 }

@@ -1,11 +1,17 @@
-<div class="board" [ngStyle]="{'width': (boardSize$ | async) + 'px', 'height': (boardSize$ | async)! + 30 + 'px'}">
-  <div class="controlls">
-      <button (click)="removeBoardSize()">Down</button>
-      <button (click)="addBoardSize()">Up</button>
-      <button (click)="resetFen()">Reset Fen</button>
-      <!-- TODO: Check this line again it used to be givenFen -->
-      <input type="text" name="givenFen" [(ngModel)]="userFen" />
-      <button (click)="setFen()">Set Fen</button>
-  </div>
-  <app-square *ngFor="let tile of (boardState$ | async)?.tiles; let i = index" [tile]="tile" #sq [attr.name]="tile.squareName"></app-square>
+<div class="board-container">
+    <div class="board" [ngStyle]="{'width': (boardSize$ | async) + 'px', 'height': (boardSize$ | async)! + 30 + 'px'}">
+    <div class="controlls">
+        <button (click)="removeBoardSize()">Down</button>
+        <button (click)="addBoardSize()">Up</button>
+        <button (click)="resetFen()">Reset Fen</button>
+        <!-- TODO: Check this line again it used to be givenFen -->
+        <input type="text" name="givenFen" [(ngModel)]="userFen" />
+        <button (click)="setFen()">Set Fen</button>
+    </div>
+    <h1>Bobby Fischer vs Boris Spassky</h1>
+    <p>Game 6, from World Championship match 1972.</p>
+    <div class="board-tiles">
+        <app-square *ngFor="let tile of (boardState$ | async)?.tiles; let i = index" [tile]="tile" #sq [attr.name]="tile.squareName"></app-square>
+    </div>
+    </div>
 </div>

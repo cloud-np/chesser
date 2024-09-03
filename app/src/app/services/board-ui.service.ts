@@ -4,6 +4,7 @@ import { Observable, startWith, Subject, tap } from 'rxjs';
 import { Move } from '../core/move/move.model';
 import { Tile } from '../core/tile/tile.model';
 
+const STARTING_BOARD_SIZE = 700;
 @UntilDestroy()
 @Injectable({
   providedIn: 'root'
@@ -13,11 +14,10 @@ export class BoardUiService {
   private boardSize$ = new Subject<number>();
   private pickedTile$ = new Subject<Tile | undefined>();
   private lastMove$ = new Subject<Move | undefined>();
-  private STARTING_BOARD_SIZE: number = 700;
-  private currBoardSize: number = this.STARTING_BOARD_SIZE;
+  private currBoardSize: number = STARTING_BOARD_SIZE;
 
   constructor() {
-    this.boardSize$.next(this.STARTING_BOARD_SIZE);
+    this.boardSize$.next(STARTING_BOARD_SIZE);
     this.boardSize$.pipe(
         tap((size: number) => this.currBoardSize = size),
         untilDestroyed(this)
@@ -41,7 +41,7 @@ export class BoardUiService {
   }
 
   getBoardSize(): Observable<number> {
-    return this.boardSize$.asObservable().pipe(startWith(this.STARTING_BOARD_SIZE));
+    return this.boardSize$.asObservable().pipe(startWith(STARTING_BOARD_SIZE));
   }
 
   addBoardSize(addSize: number): void {
@@ -55,5 +55,4 @@ export class BoardUiService {
   onDestroy(): void {
     this.boardSize$.unsubscribe();
   }
-
 }
