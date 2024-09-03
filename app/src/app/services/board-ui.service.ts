@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Observable, startWith, Subject, tap } from 'rxjs';
 import { Move } from '../core/move/move.model';
 import { Tile } from '../core/tile/tile.model';
 
 const STARTING_BOARD_SIZE = 700;
-@UntilDestroy()
 @Injectable({
   providedIn: 'root'
 })
@@ -20,7 +18,7 @@ export class BoardUiService {
     this.boardSize$.next(STARTING_BOARD_SIZE);
     this.boardSize$.pipe(
         tap((size: number) => this.currBoardSize = size),
-        untilDestroyed(this)
+        // untilDestroyed(this)
     ).subscribe();
   }
 

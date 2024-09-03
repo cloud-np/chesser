@@ -19,13 +19,7 @@
     "@angular/platform-browser": "^17.3.12",
     "@angular/platform-browser-dynamic": "^17.3.12",
     "@angular/router": "^17.3.12",
-    "@ngneat/until-destroy": "^10.0.0",
-    "@ngrx/component": "^16.3.0",
-    "@ngrx/effects": "^16.3.0",
-    "@ngrx/store": "^16.3.0",
-    "@ngrx/store-devtools": "^16.3.0",
     "angular": "^1.8.3",
-    "ngrx": "^0.0.1-security",
     "rxjs": "~7.8.0",
     "tslib": "^2.6.2",
     "zone.js": "~0.14.10"

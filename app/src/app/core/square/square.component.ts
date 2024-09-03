@@ -3,11 +3,9 @@ import { BoardUiService } from 'src/app/services/board-ui.service';
 import { map, startWith, tap } from 'rxjs';
 import { Move } from '../move/move.model';
 import { MoveUtil } from '../move/move.util';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Tile } from '../tile/tile.model';
 import { PieceType } from '../piece/piece.model';
 
-@UntilDestroy()
 @Component({
     selector: 'app-square',
     templateUrl: './square.component.html',
@@ -74,12 +72,12 @@ export class SquareComponent implements OnInit {
     ngOnInit(): void {
         this.boardUiService.getPickedTile().pipe(
             tap((tile: Tile | undefined) => this.pickedTile = tile),
-            untilDestroyed(this)
+            // untilDestroyed(this)
         ).subscribe();
 
         this.boardUiService.getLastMove().pipe(
             tap((move: Move | undefined) => this.lastMove = move),
-            untilDestroyed(this)
+            // untilDestroyed(this)
         ).subscribe();
 
         if (this.tile) {
