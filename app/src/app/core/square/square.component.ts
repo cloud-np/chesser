@@ -1,6 +1,5 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
 import { BoardUiService } from 'src/app/services/board-ui.service';
-import { map, startWith, tap } from 'rxjs';
 import { Move } from '../move/move.model';
 import { MoveUtil } from '../move/move.util';
 import { Tile } from '../tile/tile.model';
@@ -10,83 +9,67 @@ import { NgClass, NgIf, NgStyle } from '@angular/common';
 @Component({
     selector: 'app-square',
     templateUrl: './square.component.html',
-    // template: ` `,
     standalone: true,
     imports: [NgStyle, NgClass, NgIf],
     styleUrls: ['./square.component.scss']
 })
-export class SquareComponent implements OnInit {
-
+export class SquareComponent {
     private boardUiService: BoardUiService = inject(BoardUiService);
 
-    @Input() tile: Tile | undefined;
-
-    imgSrc: string = '';
-    color: string = '';
+    tileSig = input<Tile | undefined>(undefined);
+    PieceType = PieceType;
+    imgSrcSig = computed(() => `../../assets/pieces/${this.tileSig()?.piece?.imgName}`);
+    colorSig = computed(() => this.tileSig()?.isWhite ? 'white' : 'black');
     tileClickedColor: string = '';
-    squareSize$ = this.boardUiService.getBoardSize()
-        .pipe(
-            startWith(640),
-            map((bSize: number) => Math.floor(bSize / 8)),
-        );
-    lastMove: Move | undefined;
-    pickedTile: Tile | undefined;
+    lastMove: Move | undefined = this.boardUiService.getLastMove();
+    pickedTile: Tile | undefined = this.boardUiService.getPickedTile();
+    squareSizeSig = computed(() => Math.floor(this.boardUiService.getBoardSize() / 8));
+    piecePosSig = computed(() => {
+        const tile = this.tileSig();
+        if (!tile) {
+            return undefined;
+        }
+        return tile.coords.map(axis => axis * this.squareSizeSig());
+    });
     wasTileClicked: boolean = false;
 
-    constructor() { }
-
+    // TODO: Fix this its terrible.
     onTileClicked() {
-        if (!this.tile) {
+        const tile = this.tileSig();
+        if (!tile) {
             return;
         }
 
         if (!this.pickedTile) {
             // If the tile is empty, do nothing
-            if (this.tile.piece?.type === PieceType.Empty) {
+            if (tile.piece?.type === PieceType.Empty) {
                return;
             }
 
             this.tileClickedColor = 'clicked';
-            let currEl = document.getElementById(this.tile.squareName);
+            let currEl = document.getElementById(tile.squareName);
             if (currEl) {
-                this.boardUiService.setPickedTile(this.tile);
+                this.boardUiService.setPickedTile(this.tileSig());
             }
             console.log('picked piece');
-        } else {
-            // Reset the last move's tile colors
-            if (this.lastMove) {
-                MoveUtil.resetTileColors(this.lastMove);
-            }
+            return;
+        }
 
-            let move = {
-                from: this.pickedTile,
-                to: this.tile
-            };
+        // Reset the last move's tile colors
+        if (this.lastMove) {
+            MoveUtil.resetTileColors(this.lastMove);
+        }
 
-            if (MoveUtil.tryPlayMove(move)) {
-                this.boardUiService.setLastMove(move);
-                console.log('clicked second tile');
-                this.tileClickedColor = 'clicked';
-                this.boardUiService.setPickedTile(undefined);
-            }
+        let move = {
+            from: this.pickedTile,
+            to: tile
+        };
+
+        if (MoveUtil.tryPlayMove(move)) {
+            this.boardUiService.setLastMove(move);
+            console.log('clicked second tile');
+            this.tileClickedColor = 'clicked';
+            this.boardUiService.setPickedTile(undefined);
         }
     }
-
-    ngOnInit(): void {
-        this.boardUiService.getPickedTile().pipe(
-            tap((tile: Tile | undefined) => this.pickedTile = tile),
-            // untilDestroyed(this)
-        ).subscribe();
-
-        this.boardUiService.getLastMove().pipe(
-            tap((move: Move | undefined) => this.lastMove = move),
-            // untilDestroyed(this)
-        ).subscribe();
-
-        if (this.tile) {
-            this.imgSrc = `../../assets/pieces/${this.tile.piece?.imgName}`;
-            this.color = this.tile.isWhite ? 'white' : 'not-white'
-        }
-    }
-
 }

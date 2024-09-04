@@ -12,22 +12,16 @@ const DEFAULT_FEN: string = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
 @Component({
     selector: 'app-board',
     templateUrl: './board.component.html',
-    // template: ``,
     styleUrls: ['./board.component.scss'],
 })
-export class BoardComponent implements OnInit {
+export class BoardComponent {
     private boardUiService: BoardUiService = inject(BoardUiService);
     private store: Store<AppState> = inject(Store);
 
     rows: number[] = Array.from({ length: 8 }, (_, i) => i);
-    boardSize$?: Observable<number>;
-    boardSize: number = 640;
+    boardSize = this.boardUiService.getBoardSize();
     userFen: string = '';
     boardState$: Observable<BoardState> = this.store.select(selectBoardState);
-
-    ngOnInit(): void {
-        this.boardSize$ = this.boardUiService.getBoardSize();
-    }
 
     addBoardSize(): void {
         this.boardUiService.addBoardSize(100);

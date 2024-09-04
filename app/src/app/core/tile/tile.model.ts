@@ -1,7 +1,6 @@
 import { Piece } from "../piece/piece.model";
 import { Square } from "../square/square.model";
 
-
 export interface Tile {
     squareName: string;
     piece: Piece;

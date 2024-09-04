@@ -1,13 +1,6 @@
 .board-container {
     justify-content: center;
-    display: flex;
-}
-
-.board {
-    // $boardSize: 640px;
-    // width: $boardSize;
-    height: auto;
-
+    // display: block;
     h1, p {
         color: white;
         font-family: 'Roboto', sans-serif;
@@ -16,6 +9,12 @@
     h1 {
         margin-bottom: 0;
     }
+}
+
+.board {
+    // $boardSize: 640px;
+    // width: $boardSize;
+    background-image: url('../../../assets/board.svg');
 }
 
 .boardBorders {

@@ -4,5 +4,5 @@ import { AppState } from "../app.state";
 
 export const selectBoardState = createSelector(
     (state: AppState) =>  state.board,
-    (state: BoardState) => state,
-)
+    (boardState: BoardState) => boardState
+);

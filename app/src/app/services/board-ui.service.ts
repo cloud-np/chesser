@@ -1,56 +1,44 @@
-import { Injectable } from '@angular/core';
-import { Observable, startWith, Subject, tap } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
 import { Move } from '../core/move/move.model';
 import { Tile } from '../core/tile/tile.model';
 
 const STARTING_BOARD_SIZE = 700;
+
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class BoardUiService {
 
-  private boardSize$ = new Subject<number>();
-  private pickedTile$ = new Subject<Tile | undefined>();
-  private lastMove$ = new Subject<Move | undefined>();
-  private currBoardSize: number = STARTING_BOARD_SIZE;
+    private boardSizeSig = signal<number>(STARTING_BOARD_SIZE);
+    private pickedTileSig = signal<Tile | undefined>(undefined);
+    private lastMoveSig = signal<Move | undefined>(undefined);
 
-  constructor() {
-    this.boardSize$.next(STARTING_BOARD_SIZE);
-    this.boardSize$.pipe(
-        tap((size: number) => this.currBoardSize = size),
-        // untilDestroyed(this)
-    ).subscribe();
-  }
+    getLastMove(): Move | undefined {
+        return this.lastMoveSig();
+    }
 
-  getLastMove(): Observable<Move | undefined> {
-    return this.lastMove$.asObservable();
-  }
+    setLastMove(move: Move | undefined): void {
+        this.lastMoveSig.set(move);
+    }
 
-  setLastMove(move: Move | undefined): void {
-    this.lastMove$.next(move);
-  }
+    getPickedTile(): Tile | undefined {
+        return this.pickedTileSig();
+    }
 
-  getPickedTile(): Observable<Tile | undefined> {
-    return this.pickedTile$.asObservable();
-  }
+    setPickedTile(pickedTile: Tile | undefined): void {
+        this.pickedTileSig.set(pickedTile);
+    }
 
-  setPickedTile(pickedTile: Tile | undefined): void {
-    this.pickedTile$.next(pickedTile);
-  }
+    getBoardSize(): number {
+        return this.boardSizeSig();
+    }
 
-  getBoardSize(): Observable<number> {
-    return this.boardSize$.asObservable().pipe(startWith(STARTING_BOARD_SIZE));
-  }
+    addBoardSize(addSize: number): void {
+        this.boardSizeSig.update(currBoardSize => currBoardSize + addSize);
+    }
 
-  addBoardSize(addSize: number): void {
-    this.boardSize$.next(this.currBoardSize + addSize);
-  }
+    removeBoardSize(addSize: number): void {
+        this.boardSizeSig.update(currBoardSize => currBoardSize - addSize);
+    }
 
-  removeBoardSize(addSize: number): void {
-    this.boardSize$.next(this.currBoardSize - addSize);
-  }
-
-  onDestroy(): void {
-    this.boardSize$.unsubscribe();
-  }
 }

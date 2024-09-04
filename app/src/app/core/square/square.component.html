@@ -1,17 +1,18 @@
-<ng-container *ngIf="squareSize$ as squareSize">
-    <div [id]="this.tile?.squareName" class="square"
-       (click)="onTileClicked()"
-       [ngStyle]="{ height: squareSize + 'px', width: squareSize + 'px' }"
-       [ngClass]="[color]">
+@let tile = tileSig();
+@if (tile) {
+    <div [id]="tile.squareName" class="square"
+        (click)="onTileClicked()"
+        [ngClass]="[colorSig()]">
 
-        <span [id]="this.tile?.squareName + 'spanBefore'"
-            class="clicked::before" [class.clicked]="wasTileClicked"
-            [ngStyle]="{ height: squareSize + 'px', width: squareSize + 'px' }">
+        <span [id]="tile.squareName + 'spanBefore'"
+            class="clicked::before" [class.clicked]="wasTileClicked">
         </span>
-        <img class="piece clickable"
-            *ngIf="tile?.piece?.type !== 'empty'"
-            [style.width.px]="squareSize"
-            [src]="imgSrc"
-        />
+
+        @if (tile?.piece?.type !== PieceType.Empty) {
+            <img class="piece clickable"
+                [style.width.px]="squareSizeSig()"
+                [src]="imgSrcSig()"
+            />
+        }
     </div>
-</ng-container>
+}
