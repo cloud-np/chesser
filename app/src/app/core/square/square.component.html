@@ -1,18 +1,17 @@
 @let tile = tileSig();
-@if (tile) {
-    <div [id]="tile.squareName" class="square"
-        (click)="onTileClicked()"
-        [ngClass]="[colorSig()]">
+<div [id]="tile.squareName" class="square"
+    (click)="onTileClicked()"
+    [ngClass]="[colorSig()]">
 
-        <span [id]="tile.squareName + 'spanBefore'"
-            class="clicked::before" [class.clicked]="wasTileClicked">
-        </span>
+    <span [id]="tile.squareName + 'spanBefore'"
+        class="clicked::before" [class.clicked]="wasTileClicked">
+    </span>
 
-        @if (tile?.piece?.type !== PieceType.Empty) {
-            <img class="piece clickable"
-                [style.width.px]="squareSizeSig()"
-                [src]="imgSrcSig()"
-            />
-        }
-    </div>
-}
+    @if (tile?.piece?.type !== PieceType.Empty) {
+        <img class="piece clickable"
+            [style.width.px]="squareSizeSig()"
+            [style.transform]="piecePosSig()"
+            [src]="imgSrcSig()"
+        />
+    }
+</div>

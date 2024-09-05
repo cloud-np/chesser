@@ -16,7 +16,7 @@ import { NgClass, NgIf, NgStyle } from '@angular/common';
 export class SquareComponent {
     private boardUiService: BoardUiService = inject(BoardUiService);
 
-    tileSig = input<Tile | undefined>(undefined);
+    tileSig = input.required<Tile>();
     PieceType = PieceType;
     imgSrcSig = computed(() => `../../assets/pieces/${this.tileSig()?.piece?.imgName}`);
     colorSig = computed(() => this.tileSig()?.isWhite ? 'white' : 'black');
@@ -25,11 +25,8 @@ export class SquareComponent {
     pickedTile: Tile | undefined = this.boardUiService.getPickedTile();
     squareSizeSig = computed(() => Math.floor(this.boardUiService.getBoardSize() / 8));
     piecePosSig = computed(() => {
-        const tile = this.tileSig();
-        if (!tile) {
-            return undefined;
-        }
-        return tile.coords.map(axis => axis * this.squareSizeSig());
+        const offsets = this.tileSig().coords.map(axis => axis * this.squareSizeSig());
+        return `translate(${offsets[0]}px, ${offsets[1]}px)`;
     });
     wasTileClicked: boolean = false;
 
