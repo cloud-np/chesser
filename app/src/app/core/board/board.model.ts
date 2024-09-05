@@ -1,13 +1,10 @@
-import { Tile } from "./core/tile/tile.model";
+import { Tile } from "../tile/tile.model";
 
 export interface BoardState {
     fen: string;
     tiles: Tile[];
     deadPieces: string[];
     moves: string[];
-}
-
-export interface AuthState {
-    token: string;
+    boardSize: number;
 }
 

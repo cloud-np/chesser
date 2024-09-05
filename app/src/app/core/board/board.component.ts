@@ -1,13 +1,12 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BoardUiService } from 'src/app/services/board-ui.service';
 import { Store } from '@ngrx/store';
 import { selectBoardState } from 'src/app/store/board/board.selectors';
-import { BoardState } from 'src/app/boardState';
 import { AppState } from 'src/app/store/app.state';
 import { BoardAction } from 'src/app/store/board/board.actions';
-
-const DEFAULT_FEN: string = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
+import { BoardStore } from './board.model';
+import { DEFAULT_FEN } from './board.const';
 
 @Component({
     selector: 'app-board',
@@ -21,7 +20,7 @@ export class BoardComponent {
     rows: number[] = Array.from({ length: 8 }, (_, i) => i);
     boardSize = this.boardUiService.getBoardSize();
     userFen: string = '';
-    boardState$: Observable<BoardState> = this.store.select(selectBoardState);
+    boardState$: Observable<BoardStore> = this.store.select(selectBoardState);
 
     addBoardSize(): void {
         this.boardUiService.addBoardSize(100);

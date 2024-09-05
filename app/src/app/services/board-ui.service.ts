@@ -1,15 +1,15 @@
 import { Injectable, signal } from '@angular/core';
 import { Move } from '../core/move/move.model';
 import { Tile } from '../core/tile/tile.model';
-
-const STARTING_BOARD_SIZE = 700;
+import { DEFAULT_BOARD_SIZE } from '../core/board/board.const';
 
 @Injectable({
     providedIn: 'root'
 })
 export class BoardUiService {
 
-    private boardSizeSig = signal<number>(STARTING_BOARD_SIZE);
+    // TODO: this should be coming from the store maybe
+    private boardSizeSig = signal<number>(DEFAULT_BOARD_SIZE);
     private pickedTileSig = signal<Tile | undefined>(undefined);
     private lastMoveSig = signal<Move | undefined>(undefined);
 

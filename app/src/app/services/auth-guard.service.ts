@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
-import { AuthState } from '../boardState';
+import { AuthState } from '../core/board/board.model';
 
 @Injectable({
   providedIn: 'root'

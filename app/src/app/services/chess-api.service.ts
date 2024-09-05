@@ -2,7 +2,7 @@ import { Injectable, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { selectAuthState } from '../store/auth/auth.selectors';
 import { Store } from '@ngrx/store';
-import { AppState } from '../store/app.state';
+import { AppState } from '../store/app.model';
 import { API_URL } from '../api.const';
 
 @Injectable({

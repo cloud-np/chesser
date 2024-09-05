@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from "@ngrx/store";
-import { AuthState } from "../../boardState";
-import { AppState } from "../app.state";
+import { AuthState } from "../../core/board/board.model";
+import { AppState } from "../app.model";
 
 export const selectAuthState = createSelector(
     (state: AppState) =>  state.auth,
