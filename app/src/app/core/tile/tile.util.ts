@@ -1,6 +1,7 @@
 import { Tile } from "../tile/tile.model";
 import { Square } from "../square/square.model";
 import { PieceUtil } from "../piece/piece.util";
+import { PieceType } from "../piece/piece.model";
 
 export namespace TileUtil {
 
@@ -18,4 +19,8 @@ export namespace TileUtil {
     export const squareNameFromCoords = (coords: number[]): string  => {
         return String.fromCharCode(97 + coords[1]) + (8 - coords[0]);
     }
+
+    export const isTileEmpty = (tile: Tile) =>
+        tile.piece?.type === PieceType.Empty;
+
 };

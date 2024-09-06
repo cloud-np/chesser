@@ -10,7 +10,7 @@ export class BoardUiService {
 
     // TODO: this should be coming from the store maybe
     private boardSizeSig = signal<number>(DEFAULT_BOARD_SIZE);
-    private pickedTileSig = signal<Tile | undefined>(undefined);
+    private pickedTileWithPieceSig = signal<Tile | undefined>(undefined);
     private lastMoveSig = signal<Move | undefined>(undefined);
 
     getLastMove(): Move | undefined {
@@ -21,12 +21,12 @@ export class BoardUiService {
         this.lastMoveSig.set(move);
     }
 
-    getPickedTile(): Tile | undefined {
-        return this.pickedTileSig();
+    getPickedTileWithPiece(): Tile | undefined {
+        return this.pickedTileWithPieceSig();
     }
 
-    setPickedTile(pickedTile: Tile | undefined): void {
-        this.pickedTileSig.set(pickedTile);
+    setPickedTileWithPiece(pickedTile: Tile | undefined): void {
+        this.pickedTileWithPieceSig.set(pickedTile);
     }
 
     getBoardSize(): number {
