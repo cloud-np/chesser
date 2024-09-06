@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SquareComponent } from './core/square/square.component';
-import { BoardComponent } from './core/board/board.component';
+import { BoardContainer } from './core/board/board.container';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
@@ -16,7 +16,6 @@ import { RouterModule } from '@angular/router';
 @NgModule({
     declarations: [
         AppComponent,
-        BoardComponent,
         LandingPageComponent,
         LoginComponent,
         RegisterComponent,
@@ -24,6 +23,7 @@ import { RouterModule } from '@angular/router';
     bootstrap: [AppComponent],
     imports: [
         BrowserModule,
+        BoardContainer,
         RouterModule.forRoot([]),
         AppRoutingModule,
         FormsModule,

@@ -1,9 +1,9 @@
-import { BoardStore } from "../core/board/board.model";
+import { BoardState } from "../core/board/board.model";
 import { PieceUtil } from "../core/piece/piece.util";
 import { Tile } from "../core/tile/tile.model";
 import { TileUtil } from "../core/tile/tile.util";
 
-export const fenTranslator = (fen: string): Omit<BoardStore, 'boardSize'> => {
+export const fenTranslator = (fen: string): Omit<BoardState, 'boardSize'> => {
     const pieces = fen.split(' ')[0];
 
     const boardRows: Tile[] = [...Array(64)].map((_, sq) => {

@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { BoardComponent } from './core/board/board.component';
+import { BoardContainer } from './core/board/board.container';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 
 const routes: Routes = [
     { path: 'login', component: LandingPageComponent },
-    { path: 'home', component: BoardComponent },
+    { path: 'home', component: BoardContainer },
     { path: '', redirectTo: 'login', pathMatch: 'full' },
 ];
 

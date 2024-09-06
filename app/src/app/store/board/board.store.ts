@@ -19,6 +19,9 @@ export const BoardStore = signalStore(
         setFen(fen: string) {
             patchState(store, (state) => ({ ...fenTranslator(fen), boardSize: state.boardSize }));
         },
+        resetFen() {
+            patchState(store, (state) => ({ ...fenTranslator(DEFAULT_FEN), boardSize: state.boardSize }));
+        },
         setBoardSize(boardSize: number) {
             patchState(store, { boardSize });
         },
@@ -26,10 +29,4 @@ export const BoardStore = signalStore(
             patchState(store, (state) => ({ moves: { ...state.moves, move } }));
         }
     }))
-    // on(BoardAction.playerMove, (state, { move }) => {
-    //     const moves = [...state.moves, move];
-    //     return { ...state, moves };
-    // }),
-    // // We could keep the old fen later on.
-    // on(BoardAction.setFen, (_, { fen }) => (fenTranslator(fen))),
 );
