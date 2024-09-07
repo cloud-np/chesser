@@ -1,4 +1,4 @@
-import { Component, inject, NgModule, QueryList, Signal, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, NgModule, QueryList, Signal, ViewChildren } from '@angular/core';
 import { BoardUiService } from 'src/app/services/board-ui.service';
 import { BoardStore } from 'src/app/store/board/board.store';
 import { Tile } from '../tile/tile.model';
@@ -17,6 +17,7 @@ import { SquareUtil } from '../square/square.util';
     providers: [BoardStore],
     imports: [NgClass, FormsModule, NgStyle, SquareComponent],
     styleUrls: ['./board.container.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BoardContainer {
     private boardUiService: BoardUiService = inject(BoardUiService);
@@ -47,8 +48,8 @@ export class BoardContainer {
         this.store.resetFen();
     }
 
-    tileClicked(clickedTile: Tile) {
-
+    squareClicked(clickedTile: Tile) {
+        console.log("Im here", clickedTile.squareName);
         if (!this.pickedTileWithPiece) {
             // If the tile is empty, do nothing
             if (TileUtil.isTileEmpty(clickedTile)) {
@@ -63,7 +64,7 @@ export class BoardContainer {
 
             this.boardUiService.setPickedTileWithPiece(clickedTile);
             // Fix this
-            currSquare.wasTileClicked = true;
+            // currSquare.wasTileClicked = true;
 
 
             // this.tileClickedColor = 'clicked';

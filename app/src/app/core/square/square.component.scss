@@ -7,7 +7,6 @@
     margin: 0;
 }
 
-
 .piece {
     position: absolute;
 }
@@ -24,7 +23,9 @@
     opacity: .7;
     content: "";
     position: absolute;
-    background: #dada85ac;
+    // width: 100px;
+    // height: 100px;
+    background-color: #dada85ac;
 }
 
 .white {

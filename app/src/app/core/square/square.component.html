@@ -3,8 +3,7 @@
     (click)="onTileClicked()"
     [ngClass]="[colorSig()]">
 
-    <span [id]="tile.squareName + 'spanBefore'"
-        class="clicked::before" [class.clicked]="wasTileClicked">
+    <span [id]="tile.squareName + 'spanBefore'" class="clicked::before">
     </span>
 
     @if (tile?.piece?.type !== PieceType.Empty) {

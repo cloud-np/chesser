@@ -1,31 +1,32 @@
-import { Component } from '@angular/core';
-import { AuthService } from 'src/app/services/auth.service';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { LoginComponent } from '../login/login.component';
+import { RegisterComponent } from '../register/register.component';
 
 @Component({
-  selector: 'app-landing-page',
-  // templateUrl: './landing-page.component.html',
-  template: `
-  <div class="form-container">
-    <app-login *ngIf="isLogin" (onChangeToRegister)="handleOnChangeToRegister($event)" ></app-login>
-    <app-register *ngIf="!isLogin" (onChangeToLogin)="handleOnChangeToLogin($event)" ></app-register>
-  </div>
+    selector: 'app-landing-page',
+    template: `
+    <div class="form-container">
+        <app-login *ngIf="isLogin" (onChangeToRegister)="handleOnChangeToRegister($event)" ></app-login>
+        <app-register *ngIf="!isLogin" (onChangeToLogin)="handleOnChangeToLogin($event)" ></app-register>
+    </div>
   `,
-  styleUrls: ['./landing-page.component.sass']
+    styleUrls: ['./landing-page.component.sass'],
+    standalone: true,
+    imports: [NgIf, LoginComponent, RegisterComponent],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LandingPageComponent {
 
-  isLogin: boolean = true;
-  loginOrRegisterBtn: string = 'Register';
-  loginOrRegisterMsg: string = 'Already have an account? Login here!';
+    isLogin: boolean = true;
+    loginOrRegisterBtn: string = 'Register';
+    loginOrRegisterMsg: string = 'Already have an account? Login here!';
 
-  constructor() { }
+    handleOnChangeToLogin($event: any) {
+        this.isLogin = true;
+    }
 
-  handleOnChangeToLogin($event: any) {
-    this.isLogin = true;
-  }
-
-  handleOnChangeToRegister($event: any) {
-    this.isLogin = false;
-  }
-
+    handleOnChangeToRegister($event: any) {
+        this.isLogin = false;
+    }
 }

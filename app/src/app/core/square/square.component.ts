@@ -1,7 +1,5 @@
-import { Component, computed, inject, Input, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
 import { BoardUiService } from 'src/app/services/board-ui.service';
-import { Move } from '../move/move.model';
-import { MoveUtil } from '../move/move.util';
 import { Tile } from '../tile/tile.model';
 import { PieceType } from '../piece/piece.model';
 import { NgClass, NgIf, NgStyle } from '@angular/common';
@@ -11,14 +9,18 @@ import { NgClass, NgIf, NgStyle } from '@angular/common';
     templateUrl: './square.component.html',
     standalone: true,
     imports: [NgStyle, NgClass, NgIf],
-    styleUrls: ['./square.component.scss']
+    styleUrls: ['./square.component.scss'],
+    host: {
+        '[class.clicked]': 'wasSquareClicked'
+    },
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SquareComponent {
     private boardUiService: BoardUiService = inject(BoardUiService);
 
-    tileClicked = output<Tile>();
+    squareClicked = output<Tile>();
 
-    @Input() wasTileClicked = false;
+    wasSquareClicked = false;
     tileSig = input.required<Tile>();
 
     PieceType = PieceType;
@@ -32,6 +34,7 @@ export class SquareComponent {
 
     // TODO: Fix this its terrible.
     onTileClicked() {
-        this.tileClicked.emit(this.tileSig());
+        this.squareClicked.emit(this.tileSig());
+        this.wasSquareClicked = true;
     }
 }

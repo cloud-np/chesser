@@ -11,8 +11,12 @@
     <p>Game 6, from World Championship match 1972.</p>
     <div class="board" [ngStyle]="{'width': boardSize + 'px', 'height': boardSize + 'px'}">
         <div class="board-tiles">
+            @if (lastMove) {
+                <!-- <app-last-move [move]="lastMove">
+                </app-last-move> -->
+            }
             @for (tile of boardTilesSig(); track tile.square; let i = $index) {
-                <app-square [tileSig]="tile" #sq [attr.name]="tile.squareName"></app-square>
+                <app-square [tileSig]="tile" #sq [attr.name]="tile.squareName" (squareClicked)="squareClicked($event)"></app-square>
             }
         </div>
     </div>

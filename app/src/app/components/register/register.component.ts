@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-register',
-  // templateUrl: './register.component.html',
-  template: `
+    selector: 'app-register',
+    // templateUrl: './register.component.html',
+    template: `
   <div class="form-container">
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div>
@@ -24,7 +24,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
     </form>
   </div>
  `,
-  styleUrls: ['./register.component.sass']
+    styleUrls: ['./register.component.sass'],
+    standalone: true,
+    imports: [FormsModule, ReactiveFormsModule]
 })
 export class RegisterComponent {
   form = new FormGroup({
