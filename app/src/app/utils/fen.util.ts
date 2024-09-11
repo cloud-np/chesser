@@ -19,9 +19,12 @@ export const fenTranslator = (fen: string): Omit<BoardState, 'boardSize'> => {
         } else if (ch === ' ') {
             throw new Error("Not yet ready.");
         } else {
+            // TODO: We will need to change this to BitBoard represantion so we can swap between White/Black easily OR
+            // we will need to make a swap func I assume.
             const piece = PieceUtil.stringToPiece(ch);
             if (piece.type !== PieceType.Empty) {
                 const square = BoardUtil.getSquareFromRankAndFile(rank, file);
+                console.log(square);
                 const tile = tiles[square];
                 tile.piece = piece;
                 file++;

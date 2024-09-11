@@ -3,6 +3,7 @@ import { Square } from "../square/square.model";
 import { PieceUtil } from "../piece/piece.util";
 import { PieceType } from "../piece/piece.model";
 import { BoardUtil } from "../board/board.util";
+import { SquareUtil } from "../square/square.util";
 
 export namespace TileUtil {
 
@@ -10,10 +11,10 @@ export namespace TileUtil {
         const coords = BoardUtil.getCoordsBasedOnSquare(square);
         return {
             piece: PieceUtil.empty(),
-            isWhite: isWhite,
-            square: square,
+            isWhite,
+            square,
             coords,
-            squareName: BoardUtil.squareNameFromCoords(coords)
+            squareName: SquareUtil.getSquareName(square)
         }
     }
 

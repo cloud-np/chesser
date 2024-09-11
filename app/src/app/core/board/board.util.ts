@@ -11,11 +11,6 @@ export namespace BoardUtil {
     export const getCoordsBasedOnSquare = (square: Square) =>
         [getColBasedOnSquare(square), getRowBasedOnSquare(square)]
 
-    export const squareNameFromCoords = (coords: number[]): string  => {
-        console.log(String.fromCharCode(97 + coords[1]) + (1 + coords[0]), coords)
-        return String.fromCharCode(97 + coords[1]) + (1 + coords[0]);
-    }
-
     export const generateTiles = (whiteView: boolean = true) => {
         return [...Array(64)].map((_, offset) => {
             const sq = whiteView ? offset : 63 - offset;
