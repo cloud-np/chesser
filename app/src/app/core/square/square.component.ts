@@ -10,17 +10,12 @@ import { NgClass, NgIf, NgStyle } from '@angular/common';
     standalone: true,
     imports: [NgStyle, NgClass, NgIf],
     styleUrls: ['./square.component.scss'],
-    host: {
-        '[class.clicked]': 'wasSquareClicked'
-    },
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SquareComponent {
     private boardUiService: BoardUiService = inject(BoardUiService);
-
     squareClicked = output<Tile>();
-
-    wasSquareClicked = false;
+    wasSquareSelected = false;
     tileSig = input.required<Tile>();
 
     PieceType = PieceType;
@@ -33,9 +28,9 @@ export class SquareComponent {
     });
 
     // TODO: Fix this its terrible.
+    // If you do not put the empty Squares somehow with width/height this will miss them
     onTileClicked() {
-        this.wasSquareClicked = true;
-        console.log("oiui ", this.tileSig());
+        this.wasSquareSelected = true;
         this.squareClicked.emit(this.tileSig());
     }
 }

@@ -2,6 +2,7 @@ import { BoardState } from "../core/board/board.model";
 import { BoardUtil } from "../core/board/board.util";
 import { PieceType } from "../core/piece/piece.model";
 import { PieceUtil } from "../core/piece/piece.util";
+import { SquareUtil } from "../core/square/square.util";
 import { Tile } from "../core/tile/tile.model";
 
 export const fenTranslator = (fen: string): Omit<BoardState, 'boardSize'> => {
@@ -23,14 +24,16 @@ export const fenTranslator = (fen: string): Omit<BoardState, 'boardSize'> => {
             // we will need to make a swap func I assume.
             const piece = PieceUtil.stringToPiece(ch);
             if (piece.type !== PieceType.Empty) {
-                const square = BoardUtil.getSquareFromRankAndFile(rank, file);
-                console.log(square);
+                // reverse? 63 -
+                const square = SquareUtil.getSquareFromRankAndFile(rank, file);
                 const tile = tiles[square];
+                tile.squareName = SquareUtil.getSquareName(square);
                 tile.piece = piece;
                 file++;
             }
         }
     });
+    console.log(tiles.map(tile => tile.squareName));
 
     return {
         fen,

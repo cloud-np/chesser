@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, NgModule, QueryList, Signal, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, QueryList, Signal, ViewChildren } from '@angular/core';
 import { BoardUiService } from 'src/app/services/board-ui.service';
 import { BoardStore } from 'src/app/store/board/board.store';
 import { Tile } from '../tile/tile.model';
@@ -8,7 +8,6 @@ import { SquareComponent } from '../square/square.component';
 import { Move } from '../move/move.model';
 import { MoveUtil } from '../move/move.util';
 import { TileUtil } from '../tile/tile.util';
-import { SquareUtil } from '../square/square.util';
 
 @Component({
     selector: 'app-board',

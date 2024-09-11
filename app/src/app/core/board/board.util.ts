@@ -11,15 +11,10 @@ export namespace BoardUtil {
     export const getCoordsBasedOnSquare = (square: Square) =>
         [getColBasedOnSquare(square), getRowBasedOnSquare(square)]
 
-    export const generateTiles = (whiteView: boolean = true) => {
-        return [...Array(64)].map((_, offset) => {
-            const sq = whiteView ? offset : 63 - offset;
+    export const generateTiles = () =>
+        [...Array(64)].map((_, sq) => {
             let changeRowStartingColor = BoardUtil.getRowBasedOnSquare(sq) % 2 === 0
                 ? 0 : 1;
             return TileUtil.createTile((sq + changeRowStartingColor) % 2 === 0, sq);
         });
-    }
-
-    export const getSquareFromRankAndFile = (rank: number, file: number) =>
-        rank * 8 + file
 }
