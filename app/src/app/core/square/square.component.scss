@@ -5,6 +5,19 @@
     font-size: 24px;
     padding: 0;
     margin: 0;
+
+    &.clicked {
+        .box {
+            opacity: .7;
+            content: "";
+            position: absolute;
+            // width: 100px;
+            // height: 100px;
+            background-color: #dada85ac;
+
+        }
+    }
+
 }
 
 .piece {
@@ -17,15 +30,6 @@
 
 .non-empty-grab {
     cursor: grab;
-}
-
-.clicked {
-    opacity: .7;
-    content: "";
-    position: absolute;
-    // width: 100px;
-    // height: 100px;
-    background-color: #dada85ac;
 }
 
 .white {

@@ -9,8 +9,12 @@
     @if (tile?.piece?.type !== PieceType.Empty) {
         <img class="piece clickable"
             [style.width.px]="squareSizeSig()"
-            [style.transform]="piecePosSig()"
+            [style.transform]="squarePosSig()"
             [src]="imgSrcSig()"
         />
     }
 </div>
+@if (wasSquareClicked) {
+    <div class="box" [style.transform]="squarePosSig()">
+    </div>
+}

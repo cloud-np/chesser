@@ -1,34 +1,37 @@
 import { BoardState } from "../core/board/board.model";
+import { BoardUtil } from "../core/board/board.util";
+import { PieceType } from "../core/piece/piece.model";
 import { PieceUtil } from "../core/piece/piece.util";
 import { Tile } from "../core/tile/tile.model";
-import { TileUtil } from "../core/tile/tile.util";
 
 export const fenTranslator = (fen: string): Omit<BoardState, 'boardSize'> => {
-    const pieces = fen.split(' ')[0];
 
-    const boardRows: Tile[] = [...Array(64)].map((_, sq) => {
-        let changeRowStartingColor = (Math.floor((sq / 8)) % 2) === 0 ? 0 : 1;
-        return TileUtil.createTile((sq + changeRowStartingColor) % 2 === 0, sq);
-    });
+    const tiles: Tile[] = BoardUtil.generateTiles();
+    let rank = 7;
+    let file = 0;
 
-    let square = 0;
-    pieces.split('/').map((row) => {
-        row.split('').map((piece) => {
-            if (isNaN(parseInt(piece))) {
-                const tile = boardRows[square];
-                tile.piece = PieceUtil.stringToPiece(piece);
-                ++square;
-            } else {
-                for (let i = 0; i < parseInt(piece); i++) {
-                    ++square;
-                }
+    fen.split('').forEach(ch => {
+        if ("1234567890".includes(ch)) {
+            file += parseInt(ch) - parseInt('0');
+        } else if (ch === '/') {
+            --rank;
+            file = 0;
+        } else if (ch === ' ') {
+            throw new Error("Not yet ready.");
+        } else {
+            const piece = PieceUtil.stringToPiece(ch);
+            if (piece.type !== PieceType.Empty) {
+                const square = BoardUtil.getSquareFromRankAndFile(rank, file);
+                const tile = tiles[square];
+                tile.piece = piece;
+                file++;
             }
-        });
+        }
     });
 
     return {
         fen,
-        tiles: boardRows,
+        tiles: tiles,
         deadPieces: [],
         moves: [],
     }

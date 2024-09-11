@@ -49,18 +49,17 @@ export class BoardContainer {
     }
 
     squareClicked(clickedTile: Tile) {
-        console.log("Im here", clickedTile.squareName);
         if (!this.pickedTileWithPiece) {
             // If the tile is empty, do nothing
             if (TileUtil.isTileEmpty(clickedTile)) {
                 return;
             }
 
-            const currSquare = this.squares.find(sq => sq.tileSig().squareName === clickedTile.squareName);
+            // const currSquare = this.squares.find(sq => sq.tileSig().squareName === clickedTile.squareName);
             // This should always be present its more of a sanity check.
-            if (!currSquare) {
-                return;
-            }
+            // if (!currSquare) {
+            //     return;
+            // }
 
             this.boardUiService.setPickedTileWithPiece(clickedTile);
             // Fix this
