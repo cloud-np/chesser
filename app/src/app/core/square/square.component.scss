@@ -1,9 +1,10 @@
 .selected {
-    background-color: #dada85ac !important;
+    // TODO: Fix this
+    background-color: var(--selected-square) !important;
 }
 
 .square {
-    background: #769656;
+    background-color: var(--black-square);
     position: relative;
     float: left;
     font-size: 24px;
@@ -26,5 +27,5 @@
 }
 
 .white {
-    background: #eeeed2;
+    background-color: var(--white-square);
 }

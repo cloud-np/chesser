@@ -8,13 +8,14 @@ import { SquareComponent } from '../square/square.component';
 import { Move } from '../move/move.model';
 import { MoveUtil } from '../move/move.util';
 import { TileUtil } from '../tile/tile.util';
+import { CoordsComponent } from "./coords/coords.component";
 
 @Component({
     selector: 'app-board',
     templateUrl: './board.container.html',
     standalone: true,
     providers: [BoardStore],
-    imports: [NgClass, FormsModule, NgStyle, SquareComponent],
+    imports: [NgClass, FormsModule, NgStyle, SquareComponent, CoordsComponent],
     styleUrls: ['./board.container.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })

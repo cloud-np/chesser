@@ -15,9 +15,8 @@
 }
 
 .board {
-    // $boardSize: 640px;
-    // width: $boardSize;
     background-image: url('../../../assets/board.svg');
+    display: block;
 }
 
 .boardBorders {
