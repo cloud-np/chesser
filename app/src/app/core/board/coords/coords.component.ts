@@ -1,19 +1,18 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, QueryList, signal, Signal, ViewChildren, ViewEncapsulation } from '@angular/core';
-import { BoardStore } from 'src/app/store/board/board.store';
-import { NgClass, NgFor } from '@angular/common';
+import { NgClass, NgFor, NgStyle } from '@angular/common';
 
 @Component({
     selector: 'app-coords',
     template: `
-        @for (coord of coords(); track coord) {
+        @for (c of coords(); track c[0]) {
             <span class="coord">
-                {{ coord }}
+                {{ c[0] }}
             </span>
         }
     `,
     standalone: true,
     providers: [],
-    imports: [NgFor, NgClass],
+    imports: [NgFor, NgClass, NgStyle],
     styleUrls: ['./coords.component.scss'],
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,

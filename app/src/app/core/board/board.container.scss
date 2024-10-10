@@ -1,33 +1,27 @@
 .board-container {
+    position: relative;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    // display: block;
-    h1, p {
-        color: white;
-        font-family: 'Roboto', sans-serif;
-    }
-
-    h1 {
-        margin-bottom: 0;
-    }
 }
-
 .board {
     background-image: url('../../../assets/board.svg');
     display: block;
+    margin: 2rem;
+    position: absolute;
+    display: flex;
 }
 
-.boardBorders {
-    border: 1px solid #000;
-    width: 640px;
-    height: 640px;
+.board-details {
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .controlls {
     display: flex;
-    justify-content: center;
+    position: absolute;
+    top: 650px;
     margin-top: 20px;
     margin-bottom: 80px;
 

@@ -4,14 +4,14 @@
 }
 
 .square {
-    background-color: var(--black-square);
+    // background-color: var(--black-square);
     position: relative;
     float: left;
     font-size: 24px;
     position: absolute;
     padding: 0;
     margin: 0;
-
+    z-index: 2;
 }
 
 .piece {
@@ -27,5 +27,5 @@
 }
 
 .white {
-    background-color: var(--white-square);
+    // background-color: var(--white-square);
 }

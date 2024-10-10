@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, QueryList, Signal, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, QueryList, Signal, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { BoardUiService } from 'src/app/services/board-ui.service';
 import { BoardStore } from 'src/app/store/board/board.store';
 import { Tile } from '../tile/tile.model';
@@ -8,7 +8,7 @@ import { SquareComponent } from '../square/square.component';
 import { Move } from '../move/move.model';
 import { MoveUtil } from '../move/move.util';
 import { TileUtil } from '../tile/tile.util';
-import { CoordsComponent } from "./coords/coords.component";
+import { CoordsComponent } from './coords/coords.component';
 
 @Component({
     selector: 'app-board',
@@ -17,7 +17,8 @@ import { CoordsComponent } from "./coords/coords.component";
     providers: [BoardStore],
     imports: [NgClass, FormsModule, NgStyle, SquareComponent, CoordsComponent],
     styleUrls: ['./board.container.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None
 })
 export class BoardContainer {
     private boardUiService: BoardUiService = inject(BoardUiService);
@@ -26,7 +27,7 @@ export class BoardContainer {
     @ViewChildren(SquareComponent) squares!: QueryList<SquareComponent>;
 
     rows: number[] = Array.from({ length: 8 }, (_, i) => i);
-    boardSize: number = this.boardUiService.getBoardSize();
+    boardSizeSig = computed(() => this.boardUiService.getBoardSize());
     userFen: string = '';
     boardTilesSig: Signal<Tile[]> = this.store.tiles;
     lastMove: Move | undefined = this.boardUiService.getLastMove();
