@@ -24,7 +24,6 @@ export const fenTranslator = (fen: string): Omit<BoardState, 'boardSize'> => {
             // we will need to make a swap func I assume.
             const piece = PieceUtil.stringToPiece(ch);
             if (piece.type !== PieceType.Empty) {
-                // reverse? 63 -
                 const square = SquareUtil.getSquareFromRankAndFile(rank, file);
                 const tile = tiles[square];
                 tile.squareName = SquareUtil.getSquareName(square);
@@ -33,7 +32,7 @@ export const fenTranslator = (fen: string): Omit<BoardState, 'boardSize'> => {
             }
         }
     });
-    console.log(tiles.map(tile => tile.squareName));
+    // console.log(tiles.map(tile => tile.squareName));
 
     return {
         fen,

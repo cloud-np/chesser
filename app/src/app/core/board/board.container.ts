@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, QueryList, Signal, ViewChildren, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, QueryList, signal, Signal, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { BoardUiService } from 'src/app/services/board-ui.service';
 import { BoardStore } from 'src/app/store/board/board.store';
 import { Tile } from '../tile/tile.model';
@@ -30,6 +30,7 @@ export class BoardContainer {
     boardSizeSig = computed(() => this.boardUiService.getBoardSize());
     userFen: string = '';
     boardTilesSig: Signal<Tile[]> = this.store.tiles;
+    isWhiteView = signal(true);
     lastMove: Move | undefined = this.boardUiService.getLastMove();
     pickedTileWithPiece: Tile | undefined = this.boardUiService.getPickedTileWithPiece();
 

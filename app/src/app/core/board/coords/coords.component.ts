@@ -18,14 +18,14 @@ import { NgClass, NgFor, NgStyle } from '@angular/common';
     changeDetection: ChangeDetectionStrategy.OnPush,
     host: {
         '[class.coords-container]': 'true',
-        '[class.black]': 'isBlackView()',
+        '[class.black]': '!isWhiteView()',
         '[class.ranks]': 'isRank()',
         '[class.files]': '!isRank()'
     }
 })
 export class CoordsComponent {
     isRank = input<boolean>(false);
-    isBlackView = input<boolean>(false);
+    isWhiteView = input<boolean>(true);
 
     coords = computed(
         () => this.isRank()
