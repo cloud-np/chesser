@@ -21,7 +21,8 @@ export class SquareComponent {
     PieceType = PieceType;
     imgSrcSig = computed(() => `../../assets/pieces/${this.tileSig()?.piece?.imgName}`);
     colorSig = computed(() => this.tileSig()?.isWhite ? 'white' : 'black');
-    squareSizeSig = computed(() => Math.floor(this.boardUiService.getBoardSize() / 8));
+    // No need to floor or ceil the provided size should always be a perfectly divied by 8.
+    squareSizeSig = computed(() => this.boardUiService.getBoardSize() / 8);
     squarePosSig = computed(() => {
         const offsets = this.tileSig().coords.map(axis => axis * this.squareSizeSig());
         return `translate(${offsets[0]}px, ${offsets[1]}px)`;
