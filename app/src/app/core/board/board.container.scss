@@ -3,11 +3,10 @@
     display: flex;
     justify-content: center;
 }
+
 .board {
     background-image: url('../../../assets/board.svg');
     background-size: cover;
-    content: "";
-    border-radius: inherit;
     display: block;
     margin: 2rem;
     position: absolute;

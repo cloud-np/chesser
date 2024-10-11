@@ -9,8 +9,12 @@
                 <app-square [tileSig]="tile" #sq [attr.name]="tile.squareName" (squareClicked)="squareClicked($event)"></app-square>
             }
         </div>
+        <!--
         <app-coords [isRank]="true" [isBlackView]="true"></app-coords>
         <app-coords [isBlackView]="true"></app-coords>
+        -->
+        <app-coords [isRank]="true"></app-coords>
+        <app-coords></app-coords>
     </div>
     <div class="board-details">
         <div class="controlls">

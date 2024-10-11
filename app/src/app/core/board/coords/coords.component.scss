@@ -1,21 +1,33 @@
 .coords-container {
     display: flex;
-    // top: 0;
     position: absolute;
     pointer-events: none;
     user-select: none;
 
-    // &.ranks.black {
-    //     flex-flow: column;
-    // }
-
+    &.ranks:not(.black),
     &.files.black {
+        .coord {
+            &:nth-child(odd) {
+                color: var(--black-square);
+            }
+
+            &:nth-child(even) {
+                color: var(--white-square);
+            }
+        }
+    }
+
+    &.files {
         margin-left: 6px;
         width: 100%;
         bottom: 6px;
     }
 
-    &.ranks.black {
+    &.files.black {
+        flex-flow: row-reverse;
+    }
+
+    &.ranks {
         flex-flow: column;
         align-items: end;
         margin-top: 4px;
@@ -23,20 +35,9 @@
         height: 100%;
     }
 
-    // &.files.black {
-    //     align-items: flex-end;
-    //     flex-direction: row-reverse;
-    // }
-
-        // .ranks {
-        //     flex-direction: column;
-        // }
-
-    // &.files {
-    //     text-align: left;
-    //     flex-flow: row;
-    //     height: 1.4em;
-    // }
+    &.ranks:not(.black) {
+        flex-flow: column-reverse;
+    }
 
     .coord {
         font-family: 'Roboto', sans-serif;
@@ -53,4 +54,5 @@
             color: var(--black-square);
         }
     }
+
 }
