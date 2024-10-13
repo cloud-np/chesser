@@ -1,5 +1,6 @@
 import { Square } from "../square/square.model"
 import { SquareUtil } from "../square/square.util"
+import { Tile } from "../tile/tile.model"
 import { TileUtil } from "../tile/tile.util"
 
 export namespace BoardUtil {
@@ -12,24 +13,31 @@ export namespace BoardUtil {
     export const getCoordsBasedOnSquare = (square: Square) =>
         [getColBasedOnSquare(square), getRowBasedOnSquare(square)]
 
-    export const generateTiles = () => {
-        const ep = [];
-        for (let i = 8; i > 0; --i) {
-            for (let j = 8; j > 0; --j) {
-                const sq = SquareUtil.getSquareFromRankAndFile(i, -j);
-                const changeRowStartingColor = BoardUtil.getRowBasedOnSquare(sq) % 2;
-                ep.push(
-                    TileUtil.createTile((sq + changeRowStartingColor) % 2 === 0, sq)
-                );
+    export const generateTiles = (isWhiteView = true) => {
+        const tiles: Tile[] = [];
+
+        const genTile = (rank: number, file: number): void => {
+            const sq = SquareUtil.getSquareFromRankAndFile(rank, file);
+            const changeRowStartingColor = BoardUtil.getRowBasedOnSquare(sq) % 2;
+            tiles.push(
+                TileUtil.createTile((sq + changeRowStartingColor) % 2 === 0, sq)
+            );
+        }
+
+        if (isWhiteView) {
+            for (let rank = 8; rank > 0; rank--) {
+                for (let file = 8; file > 0; file--) {
+                    genTile(rank, -file);
+                }
+            }
+            return tiles;
+        }
+
+        for (let rank = 0; rank < 8; rank++) {
+            for (let file = 7; file >= 0; --file) {
+                genTile(rank, file);
             }
         }
-        return ep;
+        return tiles;
     }
-    // [...Array(64)].map((_, s) => {
-    //     const count = s % 8;
-    //     const sq = 63 - s;
-    //     console.log(sq);
-    //     const changeRowStartingColor = BoardUtil.getRowBasedOnSquare(sq) % 2;
-    //     return TileUtil.createTile((sq + changeRowStartingColor) % 2 === 0, sq);
-    // });
 }

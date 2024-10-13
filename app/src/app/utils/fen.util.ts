@@ -5,9 +5,9 @@ import { PieceUtil } from "../core/piece/piece.util";
 import { SquareUtil } from "../core/square/square.util";
 import { Tile } from "../core/tile/tile.model";
 
-export const fenTranslator = (fen: string): Omit<BoardState, 'boardSize'> => {
+export const fenTranslator = (fen: string, isWhiteView = true): Omit<BoardState, 'boardSize'> => {
 
-    const tiles: Tile[] = BoardUtil.generateTiles();
+    const tiles: Tile[] = BoardUtil.generateTiles(isWhiteView);
     let rank = 7;
     let file = 0;
 
@@ -21,7 +21,8 @@ export const fenTranslator = (fen: string): Omit<BoardState, 'boardSize'> => {
             throw new Error("Not yet ready.");
         } else {
             // TODO: We will need to change this to BitBoard represantion so we can swap between White/Black easily OR
-            // we will need to make a swap func I assume.
+            // we will need to make a swap func I assume. 
+            // NOTE: Not needed most likely. But it would be interesting to see this representation in js.
             const piece = PieceUtil.stringToPiece(ch);
             if (piece.type !== PieceType.Empty) {
                 const square = SquareUtil.getSquareFromRankAndFile(rank, file);
@@ -32,12 +33,12 @@ export const fenTranslator = (fen: string): Omit<BoardState, 'boardSize'> => {
             }
         }
     });
-    // console.log(tiles.map(tile => tile.squareName));
 
     return {
         fen,
         tiles: tiles,
         deadPieces: [],
         moves: [],
+        isWhiteView
     }
 }

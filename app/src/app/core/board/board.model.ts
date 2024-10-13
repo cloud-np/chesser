@@ -6,5 +6,6 @@ export interface BoardState {
     deadPieces: string[];
     moves: string[];
     boardSize: number;
+    isWhiteView: boolean;
 }
 

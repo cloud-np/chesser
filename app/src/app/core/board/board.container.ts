@@ -22,7 +22,7 @@ import { CoordsComponent } from './coords/coords.component';
 })
 export class BoardContainer {
     private boardUiService: BoardUiService = inject(BoardUiService);
-    private store = inject(BoardStore);
+    readonly store = inject(BoardStore);
 
     @ViewChildren(SquareComponent) squares!: QueryList<SquareComponent>;
 
@@ -48,6 +48,10 @@ export class BoardContainer {
 
     resetFen(): void {
         this.store.resetFen();
+    }
+
+    flipBoard(): void {
+        this.store.flipBoard();
     }
 
     squareClicked(clickedTile: Tile) {

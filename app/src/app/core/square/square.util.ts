@@ -26,7 +26,7 @@ export namespace SquareUtil {
             String.fromCharCode('1'.charCodeAt(0) + Math.floor(s / 8));
     }
 
-    export const getSquareFromRankAndFile = (rank: number, file: number) =>
+    export const getSquareFromRankAndFile = (rank: number, file: number): number =>
         rank * 8 + file
 
     export const getSwappedSquare = () => {

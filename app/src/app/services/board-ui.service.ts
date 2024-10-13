@@ -10,7 +10,6 @@ export class BoardUiService {
 
     // TODO: this should be coming from the store maybe
     private boardSizeSig = signal<number>(DEFAULT_BOARD_SIZE);
-    private zoom = signal(0);
     private pickedTileWithPieceSig = signal<Tile | undefined>(undefined);
     private lastMoveSig = signal<Move | undefined>(undefined);
 

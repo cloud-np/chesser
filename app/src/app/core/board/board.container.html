@@ -9,14 +9,15 @@
                 <app-square [tileSig]="tile" #sq [attr.name]="tile.squareName" (squareClicked)="squareClicked($event)"></app-square>
             }
         </div>
-        <app-coords [isRank]="true"></app-coords>
-        <app-coords></app-coords>
+        <app-coords [isWhiteView]="store.isWhiteView()"  [isRank]="true"></app-coords>
+        <app-coords [isWhiteView]="store.isWhiteView()"></app-coords>
     </div>
     <div class="board-details">
         <div class="controlls">
             <button (click)="removeBoardSize()">Down</button>
             <button (click)="addBoardSize()">Up</button>
             <button (click)="resetFen()">Reset Fen</button>
+            <button (click)="flipBoard()">Flip</button>
             <!-- TODO: Check this line again it used to be givenFen -->
             <input type="text" name="givenFen" [(ngModel)]="userFen" />
             <button (click)="setFen()">Set Fen</button>
