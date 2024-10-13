@@ -5,7 +5,7 @@
                 <!-- <app-last-move [move]="lastMove">
                 </app-last-move> -->
             }
-            @for (tile of boardTilesSig(); track tile.square; let i = $index) {
+            @for (tile of boardTilesSig(); track trackTile) {
                 <app-square [tileSig]="tile" #sq [attr.name]="tile.squareName" (squareClicked)="squareClicked($event)"></app-square>
             }
         </div>

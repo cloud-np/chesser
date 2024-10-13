@@ -7,16 +7,12 @@ import { SquareUtil } from "../square/square.util";
 
 export namespace TileUtil {
 
-    export const createTile = (isWhite: boolean, square: Square): Tile => {
-        const coords = BoardUtil.getCoordsBasedOnSquare(square);
-        return {
-            piece: PieceUtil.empty(),
-            isWhite,
-            square,
-            coords,
-            squareName: SquareUtil.getSquareName(square)
-        }
-    }
+    export const createTile = (isWhite: boolean, square: Square): Tile => ({
+        piece: PieceUtil.empty(),
+        isWhite,
+        square,
+        squareName: SquareUtil.getSquareName(square)
+    });
 
     export const isTileEmpty = (tile: Tile) =>
         tile.piece?.type === PieceType.Empty;

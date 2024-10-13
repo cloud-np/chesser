@@ -13,31 +13,11 @@ export namespace BoardUtil {
     export const getCoordsBasedOnSquare = (square: Square) =>
         [getColBasedOnSquare(square), getRowBasedOnSquare(square)]
 
-    export const generateTiles = (isWhiteView = true) => {
-        const tiles: Tile[] = [];
-
-        const genTile = (rank: number, file: number): void => {
-            const sq = SquareUtil.getSquareFromRankAndFile(rank, file);
+    export const generateTiles = (): Record<Square, Tile> => (
+        [...Array(64)].reduce((acc, _, sq) => {
             const changeRowStartingColor = BoardUtil.getRowBasedOnSquare(sq) % 2;
-            tiles.push(
-                TileUtil.createTile((sq + changeRowStartingColor) % 2 === 0, sq)
-            );
-        }
-
-        if (isWhiteView) {
-            for (let rank = 8; rank > 0; rank--) {
-                for (let file = 8; file > 0; file--) {
-                    genTile(rank, -file);
-                }
-            }
-            return tiles;
-        }
-
-        for (let rank = 0; rank < 8; rank++) {
-            for (let file = 7; file >= 0; --file) {
-                genTile(rank, file);
-            }
-        }
-        return tiles;
-    }
+            acc[sq] = TileUtil.createTile((sq + changeRowStartingColor) % 2 === 0, sq);
+            return acc;
+        }, {} as Record<Square, Tile>)
+    );
 }

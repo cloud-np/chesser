@@ -1,30 +1,40 @@
 import { fenTranslator } from "src/app/utils/fen.util";
 import { BoardState } from "../../core/board/board.model";
 import { patchState, signalStore, withComputed, withMethods, withState } from "@ngrx/signals";
-import { DEFAULT_BOARD_SIZE, DEFAULT_FEN } from "src/app/core/board/board.const";
+import { DEFAULT_BOARD_SIZE, DEFAULT_FEN, FLIPPED_LITTLE_ENDIAN_RANK_FILE_MAPPING, LITTLE_ENDIAN_RANK_FILE_MAPPING } from "src/app/core/board/board.const";
 import { Move } from "src/app/core/move/move.model";
-import { Signal } from "@angular/core";
+import { computed } from "@angular/core";
 
 
+const isWhiteView = false;
 export const initialBoardState: BoardState = {
     ...fenTranslator(DEFAULT_FEN),
     boardSize: DEFAULT_BOARD_SIZE,
-    isWhiteView: true
+    isWhiteView,
+    boardSquareOrder:
+        isWhiteView
+            ? LITTLE_ENDIAN_RANK_FILE_MAPPING
+            : FLIPPED_LITTLE_ENDIAN_RANK_FILE_MAPPING
 };
 
 export const BoardStore = signalStore(
     withState(initialBoardState),
-    withComputed(({ }) => ({
+    withComputed(({ isWhiteView }) => ({
+        boardSquareOrder: computed(() =>
+            isWhiteView()
+                ? LITTLE_ENDIAN_RANK_FILE_MAPPING
+                : FLIPPED_LITTLE_ENDIAN_RANK_FILE_MAPPING
+        )
     })),
     withMethods((store) => ({
-        setFen(fen: string, isWhiteView = true) {
-            patchState(store, (state) => ({ ...fenTranslator(fen, isWhiteView), boardSize: state.boardSize }));
+        setFen(fen: string) {
+            patchState(store, (state) => ({ ...fenTranslator(fen), boardSize: state.boardSize }));
         },
         resetFen() {
-            patchState(store, (state) => ({ ...fenTranslator(DEFAULT_FEN, state.isWhiteView), boardSize: state.boardSize }));
+            patchState(store, (state) => ({ ...fenTranslator(DEFAULT_FEN), boardSize: state.boardSize }));
         },
         flipBoard() {
-            patchState(store, (state) => ({ ...fenTranslator(state.fen, !state.isWhiteView) }));
+            patchState(store, (state) => ({ isWhiteView: !state.isWhiteView }));
         },
         setBoardSize(boardSize: number) {
             patchState(store, { boardSize });

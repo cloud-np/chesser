@@ -2,12 +2,13 @@ import { BoardState } from "../core/board/board.model";
 import { BoardUtil } from "../core/board/board.util";
 import { PieceType } from "../core/piece/piece.model";
 import { PieceUtil } from "../core/piece/piece.util";
+import { Square } from "../core/square/square.model";
 import { SquareUtil } from "../core/square/square.util";
 import { Tile } from "../core/tile/tile.model";
 
-export const fenTranslator = (fen: string, isWhiteView = true): Omit<BoardState, 'boardSize'> => {
+export const fenTranslator = (fen: string): Omit<BoardState, 'boardSize' | 'isWhiteView' | 'boardSquareOrder'> => {
 
-    const tiles: Tile[] = BoardUtil.generateTiles(isWhiteView);
+    const tiles: Record<Square, Tile> = BoardUtil.generateTiles();
     let rank = 7;
     let file = 0;
 
@@ -36,9 +37,8 @@ export const fenTranslator = (fen: string, isWhiteView = true): Omit<BoardState,
 
     return {
         fen,
-        tiles: tiles,
+        tiles,
         deadPieces: [],
-        moves: [],
-        isWhiteView
+        moves: []
     }
 }

@@ -9,6 +9,7 @@ import { Move } from '../move/move.model';
 import { MoveUtil } from '../move/move.util';
 import { TileUtil } from '../tile/tile.util';
 import { CoordsComponent } from './coords/coords.component';
+import { SquareUtil } from '../square/square.util';
 
 @Component({
     selector: 'app-board',
@@ -29,10 +30,17 @@ export class BoardContainer {
     rows: number[] = Array.from({ length: 8 }, (_, i) => i);
     boardSizeSig = computed(() => this.boardUiService.getBoardSize());
     userFen: string = '';
-    boardTilesSig: Signal<Tile[]> = this.store.tiles;
+    boardTilesSig: Signal<Tile[]> = computed(() => {
+        const tiles = this.store.tiles();
+        return this.store.boardSquareOrder().map(sq => tiles[sq]);
+    });
     isWhiteView = signal(true);
     lastMove: Move | undefined = this.boardUiService.getLastMove();
     pickedTileWithPiece: Tile | undefined = this.boardUiService.getPickedTileWithPiece();
+
+    trackTile(tile: Tile): string {
+        return `${tile.squareName}-${this.store.boardSquareOrder()}`
+    }
 
     addBoardSize(): void {
         this.boardUiService.addBoardSize(100);

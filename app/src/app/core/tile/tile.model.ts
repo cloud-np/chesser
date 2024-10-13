@@ -5,7 +5,6 @@ export interface Tile {
     squareName: string;
     piece: Piece;
     isWhite: boolean;
-    coords: number[];
     square: Square;
 };
 
