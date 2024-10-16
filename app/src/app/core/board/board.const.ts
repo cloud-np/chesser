@@ -1,8 +1,10 @@
+import { Square } from "../square/square.model";
+
 export const DEFAULT_FEN: string = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
 export const DEFAULT_BOARD_SIZE = 600;
 export const MAX_BOARD_SIZE = 800;
 export const MIN_BOARD_SIZE = 100;
-export const LITTLE_ENDIAN_RANK_FILE_MAPPING = [
+export const LITTLE_ENDIAN_RANK_FILE_MAPPING: Square[] = [
     56, 57, 58, 59, 60, 61, 62, 63, // Rank 8: a8, b8, c8, d8, e8, f8, g8, h8
     48, 49, 50, 51, 52, 53, 54, 55, // Rank 7: a7, b7, c7, d7, e7, f7, g7, h7
     40, 41, 42, 43, 44, 45, 46, 47, // Rank 6: a6, b6, c6, d6, e6, f6, g6, h6
@@ -13,7 +15,7 @@ export const LITTLE_ENDIAN_RANK_FILE_MAPPING = [
     0, 1, 2, 3, 4, 5, 6, 7          // Rank 1: a1, b1, c1, d1, e1, f1, g1, h1
 ];
 // TODO: Supposidly should be migrated when bitwise operators are implemented
-export const FLIPPED_LITTLE_ENDIAN_RANK_FILE_MAPPING = [
+export const FLIPPED_LITTLE_ENDIAN_RANK_FILE_MAPPING: Square[] = [
     7, 6, 5, 4, 3, 2, 1, 0,       // Rank 1: h1, g1, f1, e1, d1, c1, b1, a1
     15, 14, 13, 12, 11, 10, 9, 8, // Rank 2: h2, g2, f2, e2, d2, c2, b2, a2
     23, 22, 21, 20, 19, 18, 17, 16, // Rank 3: h3, g3, f3, e3, d3, c3, b3, a3

@@ -1,5 +1,5 @@
 @let tile = tileSig();
-<div [id]="tile.squareName" class="square"
+<div class="square"
     [ngClass]="[colorSig()]"
     [class.selected]="wasSquareSelected"
     (click)="onTileClicked()"
@@ -11,12 +11,6 @@
     <span [id]="tile.squareName + 'spanBefore'" class="clicked::before">
     </span>
 
-    <span>
-        <h2>
-            {{ tile.squareName }}
-        </h2>
-    </span>
-    <!--
     @if (tile?.piece?.type !== PieceType.Empty) {
         <img class="piece clickable"
             [src]="imgSrcSig()"
@@ -24,5 +18,4 @@
             [style.height.px]="squareSizeSig()"
         />
     }
-    -->
 </div>

@@ -5,8 +5,9 @@
                 <!-- <app-last-move [move]="lastMove">
                 </app-last-move> -->
             }
-            @for (tile of boardTilesSig(); track trackTile) {
-                <app-square [tileSig]="tile" #sq [attr.name]="tile.squareName" (squareClicked)="squareClicked($event)"></app-square>
+            @for (tile of boardTilesSig(); track $index) {
+                <!-- Since our positions are correctly ordered in a 1D array, the corrisponding index will be the correct position for the tile -->
+                <app-square [tilePos]="$index" [tileSig]="tile" #sq [attr.name]="tile.squareName" (squareClicked)="squareClicked($event)"></app-square>
             }
         </div>
         <app-coords [isWhiteView]="store.isWhiteView()"  [isRank]="true"></app-coords>

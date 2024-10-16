@@ -8,6 +8,5 @@ export interface BoardState {
     moves: string[];
     boardSize: number;
     isWhiteView: boolean;
-    boardSquareOrder: Square[];
 }
 
