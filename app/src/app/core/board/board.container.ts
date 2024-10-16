@@ -1,22 +1,21 @@
 import { ChangeDetectionStrategy, Component, computed, inject, QueryList, signal, Signal, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { BoardUiService } from 'src/app/services/board-ui.service';
 import { BoardStore } from 'src/app/store/board/board.store';
-import { Tile } from '../tile/tile.model';
-import { NgClass, NgStyle } from '@angular/common';
+import { Tile, TileWithSquareOrder } from '../tile/tile.model';
+import { NgClass, NgFor, NgStyle } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SquareComponent } from '../square/square.component';
 import { Move } from '../move/move.model';
 import { MoveUtil } from '../move/move.util';
 import { TileUtil } from '../tile/tile.util';
 import { CoordsComponent } from './coords/coords.component';
-import { SquareUtil } from '../square/square.util';
 
 @Component({
     selector: 'app-board',
     templateUrl: './board.container.html',
     standalone: true,
     providers: [BoardStore],
-    imports: [NgClass, FormsModule, NgStyle, SquareComponent, CoordsComponent],
+    imports: [NgClass, NgFor, FormsModule, NgStyle, SquareComponent, CoordsComponent],
     styleUrls: ['./board.container.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None
@@ -32,15 +31,12 @@ export class BoardContainer {
     userFen: string = '';
     boardTilesSig: Signal<Tile[]> = computed(() => {
         const tiles = this.store.tiles();
-        return this.store.boardSquareOrder().map(sq => tiles[sq]);
+        return this.store.boardSquareOrder().map(sq => ({ ...tiles[sq] }));
     });
+
     isWhiteView = signal(true);
     lastMove: Move | undefined = this.boardUiService.getLastMove();
     pickedTileWithPiece: Tile | undefined = this.boardUiService.getPickedTileWithPiece();
-
-    trackTile(tile: Tile): string {
-        return `${tile.squareName}-${this.store.boardSquareOrder()}`
-    }
 
     addBoardSize(): void {
         this.boardUiService.addBoardSize(100);

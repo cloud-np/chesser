@@ -11,10 +11,6 @@ export const initialBoardState: BoardState = {
     ...fenTranslator(DEFAULT_FEN),
     boardSize: DEFAULT_BOARD_SIZE,
     isWhiteView,
-    boardSquareOrder:
-        isWhiteView
-            ? LITTLE_ENDIAN_RANK_FILE_MAPPING
-            : FLIPPED_LITTLE_ENDIAN_RANK_FILE_MAPPING
 };
 
 export const BoardStore = signalStore(

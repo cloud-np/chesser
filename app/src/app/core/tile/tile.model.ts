@@ -8,6 +8,10 @@ export interface Tile {
     square: Square;
 };
 
+export interface TileWithSquareOrder extends Tile {
+    squareOrder: Square;
+}
+
 // export class Tile {
 //     squareName: string;
 //     piece: Piece;
