@@ -1,4 +1,3 @@
-@let tile = tileSig();
 <div class="square"
     [ngClass]="[colorSig()]"
     [class.selected]="wasSquareSelected"
@@ -8,10 +7,10 @@
     [style.height.px]="squareSizeSig()"
     >
 
-    <span [id]="tile.squareName + 'spanBefore'" class="clicked::before">
+    <span [id]="square() + 'spanBefore'" class="clicked::before">
     </span>
 
-    @if (tile?.piece?.type !== PieceType.Empty) {
+    @if (piece().type !== PieceType.Empty) {
         <img class="piece clickable"
             [src]="imgSrcSig()"
             [style.width.px]="squareSizeSig()"

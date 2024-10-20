@@ -7,7 +7,15 @@
             }
             @for (tile of boardTilesSig(); track $index) {
                 <!-- Since our positions are correctly ordered in a 1D array, the corrisponding index will be the correct position for the tile -->
-                <app-square [tilePos]="$index" [tileSig]="tile" #sq [attr.name]="tile.squareName" (squareClicked)="squareClicked($event)"></app-square>
+                <app-square
+                    #sq
+                    [piece]="tile.piece"
+                    [squarePos]="$index"
+                    [square]="tile.square"
+                    [isWhite]="tile.isWhite"
+                    [attr.name]="tile.squareName"
+                    (squareClicked)="squareClicked($event)">
+                </app-square>
             }
         </div>
         <app-coords [isWhiteView]="store.isWhiteView()"  [isRank]="true"></app-coords>

@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, output, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal, SimpleChanges } from '@angular/core';
 import { BoardUiService } from 'src/app/services/board-ui.service';
-import { Tile } from '../tile/tile.model';
-import { PieceType } from '../piece/piece.model';
+import { Piece, PieceType } from '../piece/piece.model';
 import { NgClass, NgIf, NgStyle } from '@angular/common';
 import { BoardUtil } from '../board/board.util';
+import { Square } from './square.model';
 
 @Component({
     selector: 'app-square',
@@ -15,26 +15,25 @@ import { BoardUtil } from '../board/board.util';
 })
 export class SquareComponent {
     private boardUiService: BoardUiService = inject(BoardUiService);
-    squareClicked = output<Tile>();
+    squareClicked = output<Square>();
     wasSquareSelected = false;
-    tileSig = input.required<Tile>();
-    tilePos = input.required<number>();
+    piece = input.required<Piece>();
+    isWhite = input.required<boolean>();
+    squarePos = input.required<number>();
+    square = input.required<Square>();
 
     PieceType = PieceType;
-    imgSrcSig = computed(() => `../../assets/pieces/${this.tileSig()?.piece?.imgName}`);
-    colorSig = computed(() => this.tileSig()?.isWhite ? 'white' : 'black');
+    imgSrcSig = computed(() => `../../assets/pieces/${this.piece()?.imgName}`);
+    colorSig = computed(() => this.isWhite() ? 'white' : 'black');
     // No need to floor or ceil the provided size should always be a perfectly divied by 8.
     squareSizeSig = computed(() => this.boardUiService.getBoardSize() / 8);
     squarePosSig = computed(() => {
-        const offsets = BoardUtil.getCoordsBasedOnSquare(this.tilePos()).map(axis => axis * this.squareSizeSig());
+        const offsets = BoardUtil.getCoordsBasedOnSquare(this.squarePos()).map(axis => axis * this.squareSizeSig());
         return `translate(${offsets[0]}px, ${offsets[1]}px)`;
     });
 
-    // TODO: Fix this its terrible.
-    // If you do not put the empty Squares somehow with width/height this will miss them
     onTileClicked() {
-        this.wasSquareSelected = true;
-        // console.log(this.tileSig().squareName);
-        this.squareClicked.emit(this.tileSig());
+        // this.wasSquareSelected = true;
+        this.squareClicked.emit(this.square());
     }
 }

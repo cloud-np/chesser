@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, computed, effect, inject, QueryList, signal, Signal, ViewChildren, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, computed, effect, inject, OnInit, QueryList, signal, Signal, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { BoardUiService } from 'src/app/services/board-ui.service';
 import { BoardStore } from 'src/app/store/board/board.store';
 import { Tile } from '../tile/tile.model';
@@ -9,6 +9,7 @@ import { TileUtil } from '../tile/tile.util';
 import { CoordsComponent } from './coords/coords.component';
 import { PieceUtil } from '../piece/piece.util';
 import { Move } from '../move/move.model';
+import { Square } from '../square/square.model';
 
 @Component({
     selector: 'app-board',
@@ -23,12 +24,11 @@ import { Move } from '../move/move.model';
 export class BoardContainer {
     private boardUiService: BoardUiService = inject(BoardUiService);
     readonly store = inject(BoardStore);
-    readonly cdr = inject(ChangeDetectorRef);
-    clickedTile = signal<Tile | undefined>(undefined);
-    allClickedTiles: Tile[] = [];
+    boardTiles = computed(() => this.store.tiles());
+    allClickedSquares: Square[] = [];
     allMoves: Move[] = [];
     // Used to track the move that its happening rightn now
-    firstClickedTileForMove?: Tile;
+    firstClickedSquareForMove = signal<Square | undefined>(undefined);
 
     @ViewChildren(SquareComponent) squares!: QueryList<SquareComponent>;
 
@@ -36,9 +36,18 @@ export class BoardContainer {
     boardSizeSig = computed(() => this.boardUiService.getBoardSize());
     userFen: string = '';
     boardTilesSig: Signal<Tile[]> = computed(() => {
-        const tiles = this.store.tiles();
+        // Having this singal here forces boardTilesSig to be re-computed
+        // We need something better.
+        this.firstClickedSquareForMove();
+        const tiles = this.boardTiles();
         return this.store.boardSquareOrder().map(sq => ({ ...tiles[sq] }));
     });
+
+    // ngAfterViewInit(): void {
+    //     const tiles = this.boardTiles();
+    //     if (this.squares)
+    //         this.squares.forEach(squareComponent => squareComponent.piece.set(tiles[squareComponent.square()].piece))
+    // }
 
     isWhiteView = signal(true);
     lastMove: Move | undefined = this.boardUiService.getLastMove();
@@ -64,61 +73,20 @@ export class BoardContainer {
         this.store.flipBoard();
     }
 
-    squareClicked(clickedTile: Tile) {
-        this.allClickedTiles.push(clickedTile);
+    squareClicked(clickedSquare: Square) {
+        this.allClickedSquares.push(clickedSquare);
+        const firstClickedSquare = this.firstClickedSquareForMove();
 
-        if (this.firstClickedTileForMove) {
-            if (!TileUtil.isTileEmpty(this.firstClickedTileForMove)) {
-                TileUtil.transferPiece(this.firstClickedTileForMove, clickedTile);
-                this.firstClickedTileForMove = undefined;
-                this.cdr.detectChanges();
+        // We have square 0
+        if (firstClickedSquare !== undefined) {
+            const tiles = this.boardTiles();
+            const firstTile = tiles[firstClickedSquare];
+            if (!TileUtil.isTileEmpty(firstTile)) {
+                TileUtil.transferPiece(firstTile, tiles[clickedSquare]);
+                this.firstClickedSquareForMove.set(undefined);
                 return;
             }
         }
-        this.firstClickedTileForMove = clickedTile;
-        // console.log("", clickedTile.piece.type);
-        // console.log(this.firstClickedTileForMove.piece.type, clickedTile.piece.type);
-        // this.firstClickedTileForMove = undefined;
-
-        //     if (!this.pickedTileWithPiece) {
-        //         // If the tile is empty, do nothing
-        //         if (TileUtil.isTileEmpty(clickedTile)) {
-        //             return;
-        //         }
-
-        //         // const currSquare = this.squares.find(sq => sq.tileSig().squareName === clickedTile.squareName);
-        //         // This should always be present its more of a sanity check.
-        //         // if (!currSquare) {
-        //         //     return;
-        //         // }
-
-        //         this.boardUiService.setPickedTileWithPiece(clickedTile);
-        //         // Fix this
-        //         // currSquare.wasTileClicked = true;
-
-
-        //         // this.tileClickedColor = 'clicked';
-        //         // console.log('picked piece');
-        //         return;
-        //     }
-        //     // 1) Should update picked piece?
-
-        //     // Reset the last move's tile colors
-        //     if (this.lastMove) {
-        //         MoveUtil.resetTileColors(this.lastMove);
-        //     }
-
-        //     let move = {
-        //         from: this.pickedTileWithPiece,
-        //         to: clickedTile
-        //     };
-
-        //     if (MoveUtil.tryPlayMove(move)) {
-        //         this.boardUiService.setLastMove(move);
-        //         console.log('clicked second tile');
-        //         // this.tileClickedColor = 'clicked';
-        //         this.boardUiService.setPickedTileWithPiece(undefined);
-        //     }
-        // }
+        this.firstClickedSquareForMove.set(clickedSquare);
     }
 }
