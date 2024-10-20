@@ -1,7 +1,7 @@
 <div class="square"
     [ngClass]="[colorSig()]"
     [class.selected]="wasSquareSelected"
-    (click)="onTileClicked()"
+    (click)="onSquareClicked()"
     [style.transform]="squarePosSig()"
     [style.width.px]="squareSizeSig()"
     [style.height.px]="squareSizeSig()"
@@ -10,11 +10,4 @@
     <span [id]="square() + 'spanBefore'" class="clicked::before">
     </span>
 
-    @if (piece().type !== PieceType.Empty) {
-        <img class="piece clickable"
-            [src]="imgSrcSig()"
-            [style.width.px]="squareSizeSig()"
-            [style.height.px]="squareSizeSig()"
-        />
-    }
 </div>

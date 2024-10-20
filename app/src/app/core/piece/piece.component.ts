@@ -1,22 +1,43 @@
-import { ChangeDetectionStrategy, Component, input } from "@angular/core";
-import { Piece } from "./piece.model";
+import { ChangeDetectionStrategy, Component, computed, ElementRef, inject, input, output, signal, SimpleChanges, ViewChild } from '@angular/core';
+import { BoardUiService } from 'src/app/services/board-ui.service';
+import { Piece, PieceType } from '../piece/piece.model';
+import { NgClass, NgIf, NgStyle } from '@angular/common';
+import { BoardUtil } from '../board/board.util';
+import { Square } from '../square/square.model';
 
 @Component({
     selector: 'app-piece',
     template: `
-        <!-- <img class="piece clickable"
-            [style.width.px]="squareSizeSig()"
-            [style.transform]="piecePosSig()"
+        <img class="piece clickable"
+            #pieceImage
             [src]="imgSrcSig()"
-        /> -->
+            [style.transform]="squarePosSig()"
+            [style.width.px]="squareSizeSig()"
+            [style.height.px]="squareSizeSig()"
+        />
     `,
     standalone: true,
+    imports: [NgStyle, NgClass, NgIf],
     styleUrls: ['./piece.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PieceComponent {
-
+    private boardUiService: BoardUiService = inject(BoardUiService);
+    wasSquareSelected = false;
     piece = input.required<Piece>();
-    coords = input.required<number[]>();
+    isWhite = input.required<boolean>();
+    piecePos = input.required<number>();
+    square = input.required<Square>();
 
+    @ViewChild('pieceImage', { static: false }) pieceImage?: ElementRef<HTMLImageElement>;
+
+    PieceType = PieceType;
+    imgSrcSig = computed(() => `../../assets/pieces/${this.piece()?.imgName}`);
+    colorSig = computed(() => this.isWhite() ? 'white' : 'black');
+    // No need to floor or ceil the provided size should always be a perfectly divied by 8.
+    squareSizeSig = computed(() => this.boardUiService.getBoardSize() / 8);
+    squarePosSig = computed(() => {
+        const offsets = BoardUtil.getCoordsBasedOnSquare(this.piecePos()).map(axis => axis * this.squareSizeSig());
+        return `translate(${offsets[0]}px, ${offsets[1]}px)`;
+    });
 }

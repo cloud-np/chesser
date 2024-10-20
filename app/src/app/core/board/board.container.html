@@ -1,24 +1,37 @@
 <div class="board-container">
-    <div class="board" [ngStyle]="{'width': boardSizeSig() + 'px', 'height': boardSizeSig() + 'px'}">
+    <div
+        class="board"
+        [ngStyle]="{'width': boardSizeSig() + 'px', 'height': boardSizeSig() + 'px'}"
+    >
         <div class="board-tiles">
-            @if (lastMove) {
-                <!-- <app-last-move [move]="lastMove">
-                </app-last-move> -->
-            }
             @for (tile of boardTilesSig(); track $index) {
                 <!-- Since our positions are correctly ordered in a 1D array, the corrisponding index will be the correct position for the tile -->
+                @if (tile?.piece?.type !== PieceType.Empty) {
+                    <app-piece
+                        #sq
+                        [piece]="tile.piece"
+                        [piecePos]="$index"
+                        [square]="tile.square"
+                        [isWhite]="tile.isWhite"
+                        [attr.name]="tile.squareName"
+                    >
+                    </app-piece>
+                }
                 <app-square
                     #sq
-                    [piece]="tile.piece"
                     [squarePos]="$index"
                     [square]="tile.square"
                     [isWhite]="tile.isWhite"
                     [attr.name]="tile.squareName"
-                    (squareClicked)="squareClicked($event)">
+                    (squareClicked)="squareClicked($event)"
+                >
                 </app-square>
             }
         </div>
-        <app-coords [isWhiteView]="store.isWhiteView()"  [isRank]="true"></app-coords>
+        <app-coords
+            [isWhiteView]="store.isWhiteView()"
+            [isRank]="true"
+        ></app-coords>
         <app-coords [isWhiteView]="store.isWhiteView()"></app-coords>
     </div>
     <div class="board-details">
