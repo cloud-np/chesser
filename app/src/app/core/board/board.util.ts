@@ -15,7 +15,7 @@ export namespace BoardUtil {
 
     export const generateTiles = (): Record<Square, Tile> => (
         [...Array(64)].reduce((acc, _, sq) => {
-            const changeRowStartingColor = BoardUtil.getRowBasedOnSquare(sq) % 2;
+            const changeRowStartingColor = BoardUtil.getRowBasedOnSquare(sq) % 2 === 0 ? 1 : 0;
             acc[sq] = TileUtil.createTile((sq + changeRowStartingColor) % 2 === 0, sq);
             return acc;
         }, {} as Record<Square, Tile>)

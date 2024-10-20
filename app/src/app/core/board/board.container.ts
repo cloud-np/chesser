@@ -1,15 +1,14 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnDestroy, QueryList, signal, Signal, ViewChildren, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, QueryList, signal, Signal, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { BoardUiService } from 'src/app/services/board-ui.service';
 import { BoardStore } from 'src/app/store/board/board.store';
 import { Tile } from '../tile/tile.model';
 import { NgClass, NgFor, NgStyle } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SquareComponent } from '../square/square.component';
-import { Move } from '../move/move.model';
 import { TileUtil } from '../tile/tile.util';
 import { CoordsComponent } from './coords/coords.component';
-import { filter, pairwise, Subject, tap } from 'rxjs';
 import { PieceUtil } from '../piece/piece.util';
+import { Move } from '../move/move.model';
 
 @Component({
     selector: 'app-board',
@@ -21,10 +20,11 @@ import { PieceUtil } from '../piece/piece.util';
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None
 })
-export class BoardContainer implements OnDestroy {
+export class BoardContainer {
     private boardUiService: BoardUiService = inject(BoardUiService);
     readonly store = inject(BoardStore);
-    clickedTiles = new Subject<Tile>();
+    clickedTile = signal<Tile | undefined>(undefined);
+    allClickedTiles: Tile[] = [];
 
     @ViewChildren(SquareComponent) squares!: QueryList<SquareComponent>;
 
@@ -35,24 +35,6 @@ export class BoardContainer implements OnDestroy {
         const tiles = this.store.tiles();
         return this.store.boardSquareOrder().map(sq => ({ ...tiles[sq] }));
     });
-
-    constructor() {
-        this.clickedTiles.asObservable().pipe(
-            pairwise(),
-            filter(([firstClickedTile, secondClickedTile]) => firstClickedTile !== secondClickedTile),
-            tap(([firstClickedTile, secondClickedTile]) => {
-                if (TileUtil.isTileEmpty(firstClickedTile)) {
-                    return;
-                }
-                secondClickedTile.piece = firstClickedTile.piece;
-                firstClickedTile.piece = PieceUtil.empty();
-            })
-        ).subscribe();
-    }
-
-    ngOnDestroy(): void {
-        this.clickedTiles.unsubscribe();
-    }
 
     isWhiteView = signal(true);
     lastMove: Move | undefined = this.boardUiService.getLastMove();
@@ -79,7 +61,17 @@ export class BoardContainer implements OnDestroy {
     }
 
     squareClicked(clickedTile: Tile) {
-        this.clickedTiles.next(clickedTile);
+        // this.clickedTile.set(clickedTile);
+        const lastClickedTile = this.allClickedTiles.at(-1);
+        console.log(lastClickedTile, clickedTile);
+        if (!lastClickedTile || TileUtil.isTileEmpty(lastClickedTile)) {
+            this.allClickedTiles.push(clickedTile);
+            return;
+        }
+
+        TileUtil.transferPiece(lastClickedTile, clickedTile);
+        this.allClickedTiles.push(clickedTile);
+
     //     if (!this.pickedTileWithPiece) {
     //         // If the tile is empty, do nothing
     //         if (TileUtil.isTileEmpty(clickedTile)) {
