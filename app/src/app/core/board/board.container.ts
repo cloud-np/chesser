@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, effect, inject, QueryList, signal, Signal, ViewChildren, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, computed, effect, inject, QueryList, signal, Signal, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { BoardUiService } from 'src/app/services/board-ui.service';
 import { BoardStore } from 'src/app/store/board/board.store';
 import { Tile } from '../tile/tile.model';
@@ -23,8 +23,12 @@ import { Move } from '../move/move.model';
 export class BoardContainer {
     private boardUiService: BoardUiService = inject(BoardUiService);
     readonly store = inject(BoardStore);
+    readonly cdr = inject(ChangeDetectorRef);
     clickedTile = signal<Tile | undefined>(undefined);
     allClickedTiles: Tile[] = [];
+    allMoves: Move[] = [];
+    // Used to track the move that its happening rightn now
+    firstClickedTileForMove?: Tile;
 
     @ViewChildren(SquareComponent) squares!: QueryList<SquareComponent>;
 
@@ -61,56 +65,60 @@ export class BoardContainer {
     }
 
     squareClicked(clickedTile: Tile) {
-        // this.clickedTile.set(clickedTile);
-        const lastClickedTile = this.allClickedTiles.at(-1);
-        console.log(lastClickedTile, clickedTile);
-        if (!lastClickedTile || TileUtil.isTileEmpty(lastClickedTile)) {
-            this.allClickedTiles.push(clickedTile);
-            return;
-        }
-
-        TileUtil.transferPiece(lastClickedTile, clickedTile);
         this.allClickedTiles.push(clickedTile);
 
-    //     if (!this.pickedTileWithPiece) {
-    //         // If the tile is empty, do nothing
-    //         if (TileUtil.isTileEmpty(clickedTile)) {
-    //             return;
-    //         }
+        if (this.firstClickedTileForMove) {
+            if (!TileUtil.isTileEmpty(this.firstClickedTileForMove)) {
+                TileUtil.transferPiece(this.firstClickedTileForMove, clickedTile);
+                this.firstClickedTileForMove = undefined;
+                this.cdr.detectChanges();
+                return;
+            }
+        }
+        this.firstClickedTileForMove = clickedTile;
+        // console.log("", clickedTile.piece.type);
+        // console.log(this.firstClickedTileForMove.piece.type, clickedTile.piece.type);
+        // this.firstClickedTileForMove = undefined;
 
-    //         // const currSquare = this.squares.find(sq => sq.tileSig().squareName === clickedTile.squareName);
-    //         // This should always be present its more of a sanity check.
-    //         // if (!currSquare) {
-    //         //     return;
-    //         // }
+        //     if (!this.pickedTileWithPiece) {
+        //         // If the tile is empty, do nothing
+        //         if (TileUtil.isTileEmpty(clickedTile)) {
+        //             return;
+        //         }
 
-    //         this.boardUiService.setPickedTileWithPiece(clickedTile);
-    //         // Fix this
-    //         // currSquare.wasTileClicked = true;
+        //         // const currSquare = this.squares.find(sq => sq.tileSig().squareName === clickedTile.squareName);
+        //         // This should always be present its more of a sanity check.
+        //         // if (!currSquare) {
+        //         //     return;
+        //         // }
+
+        //         this.boardUiService.setPickedTileWithPiece(clickedTile);
+        //         // Fix this
+        //         // currSquare.wasTileClicked = true;
 
 
-    //         // this.tileClickedColor = 'clicked';
-    //         // console.log('picked piece');
-    //         return;
-    //     }
-    //     // 1) Should update picked piece?
+        //         // this.tileClickedColor = 'clicked';
+        //         // console.log('picked piece');
+        //         return;
+        //     }
+        //     // 1) Should update picked piece?
 
-    //     // Reset the last move's tile colors
-    //     if (this.lastMove) {
-    //         MoveUtil.resetTileColors(this.lastMove);
-    //     }
+        //     // Reset the last move's tile colors
+        //     if (this.lastMove) {
+        //         MoveUtil.resetTileColors(this.lastMove);
+        //     }
 
-    //     let move = {
-    //         from: this.pickedTileWithPiece,
-    //         to: clickedTile
-    //     };
+        //     let move = {
+        //         from: this.pickedTileWithPiece,
+        //         to: clickedTile
+        //     };
 
-    //     if (MoveUtil.tryPlayMove(move)) {
-    //         this.boardUiService.setLastMove(move);
-    //         console.log('clicked second tile');
-    //         // this.tileClickedColor = 'clicked';
-    //         this.boardUiService.setPickedTileWithPiece(undefined);
-    //     }
-    // }
+        //     if (MoveUtil.tryPlayMove(move)) {
+        //         this.boardUiService.setLastMove(move);
+        //         console.log('clicked second tile');
+        //         // this.tileClickedColor = 'clicked';
+        //         this.boardUiService.setPickedTileWithPiece(undefined);
+        //     }
+        // }
     }
 }

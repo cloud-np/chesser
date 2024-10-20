@@ -34,7 +34,7 @@ export class SquareComponent {
     // If you do not put the empty Squares somehow with width/height this will miss them
     onTileClicked() {
         this.wasSquareSelected = true;
-        console.log(this.tileSig().squareName);
+        // console.log(this.tileSig().squareName);
         this.squareClicked.emit(this.tileSig());
     }
 }

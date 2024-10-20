@@ -18,8 +18,8 @@ export namespace TileUtil {
         tile.piece?.type === PieceType.Empty;
 
     export const transferPiece = (oldTile: Tile, newTile: Tile) => {
-        oldTile.piece = PieceUtil.empty();
         newTile.piece = oldTile.piece;
+        oldTile.piece = PieceUtil.empty();
     }
 
 };
