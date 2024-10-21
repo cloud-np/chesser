@@ -13,7 +13,7 @@ import { Square } from '../square/square.model';
 import { BoardUtil } from './board.util';
 import { PieceComponent } from '../piece/piece.component';
 import { SquareUtil } from '../square/square.util';
-import { PieceType } from '../piece/piece.model';
+import { Piece, PieceType } from '../piece/piece.model';
 
 @Component({
     selector: 'app-board',
@@ -34,19 +34,23 @@ export class BoardContainer {
 
     PieceType = PieceType;
     // Used to track the move that its happening rightn now
-    firstClickedSquareForMove = signal<Square | undefined>(undefined);
+    fromSquare = signal<Square | undefined>(undefined);
 
     @ViewChildren(PieceComponent) pieces!: QueryList<PieceComponent>;
 
     rows: number[] = Array.from({ length: 8 }, (_, i) => i);
     boardSizeSig = computed(() => this.boardUiService.getBoardSize());
     userFen: string = '';
-    boardTilesSig: Signal<Tile[]> = computed(() => {
-        // Having this singal here forces boardTilesSig to be re-computed
-        // We need something better.
-        this.firstClickedSquareForMove();
-        const tiles = this.boardTiles();
-        return this.store.boardSquareOrder().map(sq => ({ ...tiles[sq] }));
+    piecesSig: Signal<Piece[]> = computed(() => {
+        // const tiles = this.boardTiles();
+        const pieces = this.store.pieces();
+        return this.store.boardSquareOrder().reduce((acc, sq) => {
+            const piece = pieces[sq];
+            if (piece) {
+                acc.push({ ...pieces[sq], square: sq, });
+            }
+            return acc;
+        }, [] as Piece[]);
     });
 
     isWhiteView = signal(true);
@@ -75,26 +79,25 @@ export class BoardContainer {
 
     squareClicked(clickedSquare: Square) {
         this.allClickedSquares.push(clickedSquare);
-        const firstClickedSquare = this.firstClickedSquareForMove();
+        const fromSquare = this.fromSquare();
 
         // We have square 0
-        if (firstClickedSquare !== undefined) {
+        if (fromSquare !== undefined) {
             const tiles = this.boardTiles();
-            const firstTile = tiles[firstClickedSquare];
-            if (!TileUtil.isTileEmpty(firstTile)) {
-                const secondTile = tiles[clickedSquare];
-                const pieceClicked = this.pieces.find(pieceComp => pieceComp.square() === firstClickedSquare);
-                // const e = this.pieces.find(pieceComp => pieceComp.square() === clickedSquare);
-                if (pieceClicked)
-                    BoardUtil.transferPiece(firstTile, secondTile, this.store.boardSquareOrder(), pieceClicked);
-                // TODO: Here when trasfering we should basically move the
-                // starting piece with transform to the position square.
-                // TileUtil.transferPiece(firstTile, );
+            const fromTile = tiles[fromSquare];
 
-                this.firstClickedSquareForMove.set(undefined);
-                return;
+            console.log("im here", TileUtil.isTileEmpty(fromTile), fromSquare === clickedSquare)
+            // If the first tile was empty or the second is the same with the first one
+            // then we just return there isn't any atempt for a move.
+            if (!TileUtil.isTileEmpty(fromTile) && fromSquare !== clickedSquare) {
+                const toTile = tiles[clickedSquare];
+                const pieceClicked = this.pieces.find(pieceComp => pieceComp.square() === fromSquare);
+                if (pieceClicked)
+                    BoardUtil.transferPiece(fromTile, toTile, this.store.boardSquareOrder(), pieceClicked);
+                this.fromSquare.set(undefined);
             }
+
         }
-        this.firstClickedSquareForMove.set(clickedSquare);
+        this.fromSquare.set(clickedSquare);
     }
 }

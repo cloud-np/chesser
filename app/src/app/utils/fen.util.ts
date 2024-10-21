@@ -1,6 +1,6 @@
 import { BoardState } from "../core/board/board.model";
 import { BoardUtil } from "../core/board/board.util";
-import { PieceType } from "../core/piece/piece.model";
+import { Piece, PieceType } from "../core/piece/piece.model";
 import { PieceUtil } from "../core/piece/piece.util";
 import { Square } from "../core/square/square.model";
 import { SquareUtil } from "../core/square/square.util";
@@ -10,6 +10,7 @@ export const fenTranslator = (fen: string): Omit<BoardState, 'boardSize' | 'isWh
     const tiles: Record<Square, Tile> = BoardUtil.generateTiles();
     let rank = 7;
     let file = 0;
+    const pieces = {} as Record<Square, Piece>;
 
     fen.split('').forEach(ch => {
         if ("1234567890".includes(ch)) {
@@ -29,6 +30,7 @@ export const fenTranslator = (fen: string): Omit<BoardState, 'boardSize' | 'isWh
                 const tile = tiles[square];
                 tile.squareName = SquareUtil.getSquareName(square);
                 tile.piece = piece;
+                pieces[square] = piece;
                 file++;
             }
         }
@@ -37,6 +39,7 @@ export const fenTranslator = (fen: string): Omit<BoardState, 'boardSize' | 'isWh
     return {
         fen,
         tiles,
+        pieces,
         deadPieces: [],
         moves: []
     }

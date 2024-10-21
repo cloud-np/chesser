@@ -9,7 +9,7 @@ import { Square } from '../square/square.model';
     selector: 'app-piece',
     template: `
         <img class="piece clickable"
-            #pieceImage
+            #pieceImg
             [src]="imgSrcSig()"
             [style.transform]="squarePosSig()"
             [style.width.px]="squareSizeSig()"
@@ -29,15 +29,12 @@ export class PieceComponent {
     piecePos = input.required<number>();
     square = input.required<Square>();
 
-    @ViewChild('pieceImage', { static: false }) pieceImage?: ElementRef<HTMLImageElement>;
+    @ViewChild('pieceImg', { static: false }) pieceImg!: ElementRef<HTMLImageElement>;
 
     PieceType = PieceType;
     imgSrcSig = computed(() => `../../assets/pieces/${this.piece()?.imgName}`);
     colorSig = computed(() => this.isWhite() ? 'white' : 'black');
     // No need to floor or ceil the provided size should always be a perfectly divied by 8.
     squareSizeSig = computed(() => this.boardUiService.getBoardSize() / 8);
-    squarePosSig = computed(() => {
-        const offsets = BoardUtil.getCoordsBasedOnSquare(this.piecePos()).map(axis => axis * this.squareSizeSig());
-        return `translate(${offsets[0]}px, ${offsets[1]}px)`;
-    });
+    squarePosSig = computed(() => BoardUtil.getTranlationForPos(this.piecePos(), this.squareSizeSig()));
 }

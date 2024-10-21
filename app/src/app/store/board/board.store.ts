@@ -36,7 +36,14 @@ export const BoardStore = signalStore(
             patchState(store, { boardSize });
         },
         playMove(move: Move) {
-            patchState(store, (state) => ({ moves: { ...state.moves, move } }));
+            patchState(store, (state) => ({
+                moves: { ...state.moves, move },
+                tiles: {
+                    ...state.tiles,
+                    [move.from.square]: move.from,
+                    [move.to.square]: move.to
+                }
+            }));
         }
     }))
 );

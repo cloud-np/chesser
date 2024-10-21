@@ -1,8 +1,10 @@
 import { PieceComponent } from "../piece/piece.component"
+import { PieceUtil } from "../piece/piece.util"
 import { SquareComponent } from "../square/square.component"
 import { Square } from "../square/square.model"
 import { Tile } from "../tile/tile.model"
 import { TileUtil } from "../tile/tile.util"
+import { BoardState } from "./board.model"
 
 export namespace BoardUtil {
     export const getRowBasedOnSquare = (square: Square) =>
@@ -34,24 +36,22 @@ export namespace BoardUtil {
         oldTile: Tile,
         newTile: Tile,
         squaresOrder: Square[],
-        pieceClicked: PieceComponent
+        pieceClicked: PieceComponent,
     ) => {
-        const oldSquareIndex = squaresOrder.findIndex(square => oldTile.square === square);
+
+        // UI
         const newSquareIndex = squaresOrder.findIndex(square => newTile.square === square);
+        pieceClicked.pieceImg.nativeElement.style.transform = BoardUtil.getTranlationForPos(newSquareIndex, pieceClicked.squareSizeSig());
+        // SDK
+        // Nice trick but it flashes the actual element because of re-render
+        // setTimeout(() => {
+        newTile.piece = oldTile.piece;
+        oldTile.piece = PieceUtil.empty();
+        // }, 0);
+    }
 
-        const getTranlate = (piecePos: number) => {
-            const sp = piecePos;
-            const ss = pieceClicked.squareSizeSig();
-            const offsets = BoardUtil.getCoordsBasedOnSquare(sp).map(axis => axis * ss);
-            return [offsets[0], offsets[1]];
-        }
-        const oldTileOffset = getTranlate(oldSquareIndex);
-        const newTileOffset = getTranlate(newSquareIndex);
-        const finalTranlate = `translate(${newTileOffset[0] - oldTileOffset[0]}px, ${newTileOffset[1] - oldTileOffset[1]}px)`;
-        console.log(oldTileOffset, newTileOffset);
-
-        pieceClicked.pieceImage!.nativeElement.style.transform = finalTranlate;
-        // newTile.tile.piece = oldTile.tile.piece;
-        // oldTile.tile.piece = PieceUtil.empty();
+    export const getTranlationForPos = (piecePos: number, squareSize: number): string => {
+        const offsets = BoardUtil.getCoordsBasedOnSquare(piecePos).map(axis => axis * squareSize);
+        return `translate(${offsets[0]}px, ${offsets[1]}px)`;
     }
 }

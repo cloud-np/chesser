@@ -1,3 +1,4 @@
+import { BoardUtil } from "../board/board.util";
 import { Piece, PieceType } from "./piece.model";
 
 export namespace PieceUtil {
