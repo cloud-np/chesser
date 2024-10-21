@@ -15,6 +15,12 @@ import { PieceComponent } from '../piece/piece.component';
 import { SquareUtil } from '../square/square.util';
 import { Piece, PieceType } from '../piece/piece.model';
 
+interface PieceWithSquare extends Piece {
+    square: Square;
+    piecePos: Square;
+    squareName: string;
+}
+
 @Component({
     selector: 'app-board',
     templateUrl: './board.container.html',
@@ -41,16 +47,16 @@ export class BoardContainer {
     rows: number[] = Array.from({ length: 8 }, (_, i) => i);
     boardSizeSig = computed(() => this.boardUiService.getBoardSize());
     userFen: string = '';
-    piecesSig: Signal<Piece[]> = computed(() => {
+    piecesSig: Signal<PieceWithSquare[]> = computed(() => {
         // const tiles = this.boardTiles();
         const pieces = this.store.pieces();
-        return this.store.boardSquareOrder().reduce((acc, sq) => {
+        return this.store.boardSquareOrder().reduce((acc, sq, index) => {
             const piece = pieces[sq];
             if (piece) {
-                acc.push({ ...pieces[sq], square: sq, });
+                acc.push({ ...pieces[sq], piecePos: index, square: sq, squareName: SquareUtil.getSquareName(sq)});
             }
             return acc;
-        }, [] as Piece[]);
+        }, [] as PieceWithSquare[]);
     });
 
     isWhiteView = signal(true);
