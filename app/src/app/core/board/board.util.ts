@@ -41,7 +41,8 @@ export namespace BoardUtil {
 
         // UI
         const newSquareIndex = squaresOrder.findIndex(square => newTile.square === square);
-        pieceClicked.pieceImg.nativeElement.style.transform = BoardUtil.getTranlationForPos(newSquareIndex, pieceClicked.squareSizeSig());
+        pieceClicked.pieceImg.nativeElement.style.transform = BoardUtil.getTranlationForPos(newSquareIndex, pieceClicked.squareSizeSig());;
+
         // SDK
         // Nice trick but it flashes the actual element because of re-render
         // setTimeout(() => {

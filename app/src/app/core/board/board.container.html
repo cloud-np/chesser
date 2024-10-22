@@ -2,6 +2,7 @@
     <div
         class="board"
         [ngStyle]="{'width': boardSizeSig() + 'px', 'height': boardSizeSig() + 'px'}"
+        (click)="squareClicked($event)"
     >
         <div class="board-tiles">
             @for (piece of piecesSig(); track $index) {
@@ -11,9 +12,9 @@
                         #sq
                         [piece]="piece"
                         [piecePos]="piece.piecePos"
-                        [square]="piece.square"
                         [isWhite]="piece.isWhite"
                         [attr.name]="piece.squareName"
+                        (pieceClicked)="pieceClicked($event)"
                     >
                     </app-piece>
                 }
@@ -23,7 +24,6 @@
                     [square]="tile.square"
                     [isWhite]="tile.isWhite"
                     [attr.name]="tile.squareName"
-                    (squareClicked)="squareClicked($event)"
                 >
                 </app-square> -->
             }

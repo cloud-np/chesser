@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Component, computed, ElementRef, inject, input, output, signal, SimpleChanges, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, ElementRef, inject, input, output, ViewChild } from '@angular/core';
 import { BoardUiService } from 'src/app/services/board-ui.service';
-import { Piece, PieceType } from '../piece/piece.model';
+import { PieceType, PieceWithSquare } from '../piece/piece.model';
 import { NgClass, NgIf, NgStyle } from '@angular/common';
 import { BoardUtil } from '../board/board.util';
-import { Square } from '../square/square.model';
 
 @Component({
     selector: 'app-piece',
@@ -14,6 +13,7 @@ import { Square } from '../square/square.model';
             [style.transform]="squarePosSig()"
             [style.width.px]="squareSizeSig()"
             [style.height.px]="squareSizeSig()"
+            (click)="emitPieceClicked($event)"
         />
     `,
     standalone: true,
@@ -24,10 +24,10 @@ import { Square } from '../square/square.model';
 export class PieceComponent {
     private boardUiService: BoardUiService = inject(BoardUiService);
     wasSquareSelected = false;
-    piece = input.required<Piece>();
+    piece = input.required<PieceWithSquare>();
     isWhite = input.required<boolean>();
     piecePos = input.required<number>();
-    square = input.required<Square>();
+    pieceClicked = output<{ piece: PieceComponent, event: MouseEvent }>();
 
     @ViewChild('pieceImg', { static: false }) pieceImg!: ElementRef<HTMLImageElement>;
 
@@ -37,4 +37,8 @@ export class PieceComponent {
     // No need to floor or ceil the provided size should always be a perfectly divied by 8.
     squareSizeSig = computed(() => this.boardUiService.getBoardSize() / 8);
     squarePosSig = computed(() => BoardUtil.getTranlationForPos(this.piecePos(), this.squareSizeSig()));
+
+    emitPieceClicked(event: MouseEvent): void {
+        this.pieceClicked.emit({ piece: this, event: event });
+    }
 }
