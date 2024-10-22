@@ -91,6 +91,23 @@ export class BoardContainer {
         this.movingPiece.set(piece);
     }
 
+    // For better search of the keys
+    // export function getKeyAtDomPos(
+    //   pos: cg.NumberPair,
+    //   asWhite: boolean,
+    //   bounds: DOMRectReadOnly,
+    // ): cg.Key | undefined {
+    //   let file = Math.floor((8 * (pos[0] - bounds.left)) / bounds.width);
+    //   if (!asWhite) file = 7 - file;
+    //   let rank = 7 - Math.floor((8 * (pos[1] - bounds.top)) / bounds.height);
+    //   if (!asWhite) rank = 7 - rank;
+    //   return file >= 0 && file < 8 && rank >= 0 && rank < 8 ? pos2key([file, rank]) : undefined;
+    // }
+
+    // export const pos2key = (pos: cg.Pos): cg.Key => allKeys[8 * pos[0] + pos[1]];
+
+    // export const key2pos = (k: cg.Key): cg.Pos => [k.charCodeAt(0) - 97, k.charCodeAt(1) - 49];
+
     squareClicked(clickEvent: MouseEvent) {
         const movingPiece = this.movingPiece();
         // We have square 0 better be explicit just in case.
