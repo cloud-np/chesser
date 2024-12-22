@@ -18,7 +18,7 @@ import { BoardUtil } from './board.util';
     templateUrl: './board.container.html',
     standalone: true,
     providers: [BoardStore],
-    imports: [NgClass, NgFor, FormsModule, NgStyle, SquareComponent, CoordsComponent, PieceComponent],
+    imports: [FormsModule, NgStyle, SquareComponent, CoordsComponent, PieceComponent],
     styleUrls: ['./board.container.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None
@@ -42,7 +42,7 @@ export class BoardContainer {
     piecesSig: Signal<PieceWithSquare[]> = computed(() => {
         const pieces = this.store.pieces();
         const order = this.store.boardSquareOrder();
-        console.log("om hje");
+        console.log("om hje", order);
         return order.reduce((acc, sq, index) => {
             const piece = pieces[sq];
             if (piece) {
@@ -78,6 +78,7 @@ export class BoardContainer {
 
     pieceClicked(pieceWithClickEvent: { piece: PieceComponent, event: MouseEvent }) {
         const { piece, event } = pieceWithClickEvent;
+        console.log(piece.piece().squareName);
 
         // We need to capture the enemy piece
         // if (this.movingPiece()) {

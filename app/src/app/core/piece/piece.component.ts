@@ -24,6 +24,9 @@ import { BoardUtil } from '../board/board.util';
 export class PieceComponent {
     private boardUiService: BoardUiService = inject(BoardUiService);
     wasSquareSelected = false;
+
+    // TODO: You pass the Square but you never update it!! ???
+    // Why do you even pass it here.
     piece = input.required<PieceWithSquare>();
     isWhite = input.required<boolean>();
     piecePos = input.required<number>();

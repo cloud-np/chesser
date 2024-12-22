@@ -9,7 +9,6 @@
                 <!-- Since our positions are correctly ordered in a 1D array, the corrisponding index will be the correct position for the tile -->
                 @if (piece.type !== PieceType.Empty) {
                     <app-piece
-                        #sq
                         [piece]="piece"
                         [piecePos]="piece.piecePos"
                         [isWhite]="piece.isWhite"
