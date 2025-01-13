@@ -10,7 +10,6 @@
                 @if (piece.type !== PieceType.Empty) {
                     <app-piece
                         [piece]="piece"
-                        [piecePos]="piece.piecePos"
                         [isWhite]="piece.isWhite"
                         [attr.name]="piece.squareName"
                         (pieceClicked)="pieceClicked($event)"

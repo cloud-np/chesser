@@ -20,9 +20,6 @@ export interface Piece {
     type: PieceType;
     imgName: string;
     isWhite: boolean;
-};
-
-export interface Tile {
-    squareName: string;
     square: Square;
+    pos: Pos;
 };

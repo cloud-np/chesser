@@ -7,7 +7,7 @@ import { SquareUtil } from "../core/square/square.util";
 import { Tile } from "../core/tile/tile.model";
 
 export const fenTranslator = (fen: string): Omit<BoardState, 'boardSize' | 'isWhiteView' | 'boardSquareOrder'> => {
-    const tiles: Record<Square, Tile> = BoardUtil.generateTiles();
+    // const tiles: Tile[] = BoardUtil.generateTiles();
     let rank = 7;
     let file = 0;
     const pieces = {} as Record<Square, Piece>;
@@ -24,12 +24,12 @@ export const fenTranslator = (fen: string): Omit<BoardState, 'boardSize' | 'isWh
             // TODO: We will need to change this to BitBoard represantion so we can swap between White/Black easily OR
             // we will need to make a swap func I assume.
             // NOTE: Not needed most likely. But it would be interesting to see this representation in js.
-            const piece = PieceUtil.stringToPiece(ch);
+            const square = SquareUtil.posToSquare([rank, file]);
+            const piece = PieceUtil.createPiece(ch, square);
             if (piece.type !== PieceType.Empty) {
-                const square = SquareUtil.getSquareFromRankAndFile(rank, file);
-                const tile = tiles[square];
-                tile.squareName = SquareUtil.getSquareName(square);
-                tile.piece = piece;
+                // const tile = tiles[square];
+                // tile.squareName = SquareUtil.getSquareName(square);
+                // tile.piece = piece;
                 pieces[square] = piece;
                 file++;
             }
@@ -38,7 +38,6 @@ export const fenTranslator = (fen: string): Omit<BoardState, 'boardSize' | 'isWh
 
     return {
         fen,
-        tiles,
         pieces,
         deadPieces: [],
         moves: []

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, QueryList, signal
 import { BoardUiService } from 'src/app/services/board-ui.service';
 import { BoardStore } from 'src/app/store/board/board.store';
 import { Tile } from '../tile/tile.model';
-import { NgClass, NgFor, NgStyle } from '@angular/common';
+import { NgStyle } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SquareComponent } from '../square/square.component';
 import { CoordsComponent } from './coords/coords.component';
@@ -12,6 +12,7 @@ import { PieceComponent } from '../piece/piece.component';
 import { SquareUtil } from '../square/square.util';
 import { PieceType, PieceWithSquare } from '../piece/piece.model';
 import { BoardUtil } from './board.util';
+import { Subject } from 'rxjs';
 
 @Component({
     selector: 'app-board',
@@ -42,11 +43,10 @@ export class BoardContainer {
     piecesSig: Signal<PieceWithSquare[]> = computed(() => {
         const pieces = this.store.pieces();
         const order = this.store.boardSquareOrder();
-        console.log("om hje", order);
         return order.reduce((acc, sq, index) => {
             const piece = pieces[sq];
             if (piece) {
-                acc.push({ ...pieces[sq], piecePos: index, square: sq, squareName: SquareUtil.getSquareName(sq)});
+                acc.push({ ...pieces[sq], square: sq, squareName: SquareUtil.getSquareName(sq)});
             }
             return acc;
         }, [] as PieceWithSquare[]);
@@ -76,38 +76,34 @@ export class BoardContainer {
         this.store.flipBoard();
     }
 
+    pieceClicked$ = new Subject<{ piece: PieceComponent, event: MouseEvent }>();
+
     pieceClicked(pieceWithClickEvent: { piece: PieceComponent, event: MouseEvent }) {
         const { piece, event } = pieceWithClickEvent;
-        console.log(piece.piece().squareName);
+        // this.pieceClicked$.emit(pieceWithClickEvent);
+        console.log("im hee: ", piece.piece().squareName);
 
-        // We need to capture the enemy piece
-        // if (this.movingPiece()) {
-        //     this.squareClicked(event);
+        // Clicked the same square
+        // if (this.movingPiece()?.piece().square === piece.piece().square) {
+        //     return;
         // }
 
+
+        // if (this.movingPiece() === undefined) {
+        //     this.movingPiece.set(piece);
+        //     return;
+        // }
+
+        // const clickedPos = this.boardUiService.getSquareFromPixelCoords(event.offsetX, event.offsetY);
+        // const clickedSquare = this.store.boardSquareOrder()[clickedPos];
+        // this.movingPiece()!.piece().square = clickedSquare;
+
+        event.stopPropagation();
+        this.movingPiece.set(piece);
         // We do not want to propagete the event to board container
         // because it will register another event there for the square clicked.
-        event.stopPropagation();
 
-        this.movingPiece.set(piece);
     }
-
-    // For better search of the keys
-    // export function getKeyAtDomPos(
-    //   pos: cg.NumberPair,
-    //   asWhite: boolean,
-    //   bounds: DOMRectReadOnly,
-    // ): cg.Key | undefined {
-    //   let file = Math.floor((8 * (pos[0] - bounds.left)) / bounds.width);
-    //   if (!asWhite) file = 7 - file;
-    //   let rank = 7 - Math.floor((8 * (pos[1] - bounds.top)) / bounds.height);
-    //   if (!asWhite) rank = 7 - rank;
-    //   return file >= 0 && file < 8 && rank >= 0 && rank < 8 ? pos2key([file, rank]) : undefined;
-    // }
-
-    // export const pos2key = (pos: cg.Pos): cg.Key => allKeys[8 * pos[0] + pos[1]];
-
-    // export const key2pos = (k: cg.Key): cg.Pos => [k.charCodeAt(0) - 97, k.charCodeAt(1) - 49];
 
     squareClicked(clickEvent: MouseEvent) {
         const movingPiece = this.movingPiece();

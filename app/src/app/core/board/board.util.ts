@@ -1,10 +1,8 @@
 import { PieceComponent } from "../piece/piece.component"
 import { PieceUtil } from "../piece/piece.util"
-import { SquareComponent } from "../square/square.component"
-import { Square } from "../square/square.model"
 import { Tile } from "../tile/tile.model"
 import { TileUtil } from "../tile/tile.util"
-import { BoardState } from "./board.model"
+import { Square } from "../types"
 
 export namespace BoardUtil {
     export const getRowBasedOnSquare = (square: Square) =>
@@ -23,13 +21,12 @@ export namespace BoardUtil {
         return (row * 8) + col;
     };
 
-    export const generateTiles = (): Record<Square, Tile> => (
-        [...Array(64)].reduce((acc, _, sq) => {
-            const changeRowStartingColor = BoardUtil.getRowBasedOnSquare(sq) % 2 === 0 ? 1 : 0;
-            acc[sq] = TileUtil.createTile((sq + changeRowStartingColor) % 2 === 0, sq);
-            return acc;
-        }, {} as Record<Square, Tile>)
-    );
+    // export const generateTiles = (): Tile[] => (
+    //     [...Array(64)].map(sq => {
+    //         const changeRowStartingColor = BoardUtil.getRowBasedOnSquare(sq) % 2 === 0 ? 1 : 0;
+    //         return TileUtil.createTile((sq + changeRowStartingColor) % 2 === 0);
+    //     })
+    // );
 
 
     export const transferPiece = (
@@ -40,7 +37,7 @@ export namespace BoardUtil {
     ) => {
 
         // UI
-        const newSquareIndex = squaresOrder.findIndex(square => newTile.square === square);
+        const newSquareIndex = squaresOrder.findIndex(square => newTile.piece.square === square);
         pieceClicked.pieceImg.nativeElement.style.transform = BoardUtil.getTranlationForPos(newSquareIndex, pieceClicked.squareSizeSig());;
 
         // SDK
