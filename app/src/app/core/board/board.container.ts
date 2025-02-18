@@ -7,12 +7,11 @@ import { FormsModule } from '@angular/forms';
 import { SquareComponent } from '../square/square.component';
 import { CoordsComponent } from './coords/coords.component';
 import { Move } from '../move/move.model';
-import { Square } from '../square/square.model';
 import { PieceComponent } from '../piece/piece.component';
 import { SquareUtil } from '../square/square.util';
-import { PieceType, PieceWithSquare } from '../piece/piece.model';
 import { BoardUtil } from './board.util';
 import { Subject } from 'rxjs';
+import { Piece, PieceType, Square } from '../types';
 
 @Component({
     selector: 'app-board',
@@ -27,12 +26,11 @@ import { Subject } from 'rxjs';
 export class BoardContainer {
     private boardUiService: BoardUiService = inject(BoardUiService);
     readonly store = inject(BoardStore);
-    boardTiles = computed(() => this.store.tiles());
     allClickedSquares: Square[] = [];
     allMoves: Move[] = [];
 
     PieceType = PieceType;
-    // Used to track the move that its happening rightn now
+    // Used to track the move that it's happening right now
     movingPiece = signal<PieceComponent | undefined>(undefined);
 
     @ViewChildren(PieceComponent) pieces!: QueryList<PieceComponent>;
@@ -40,21 +38,11 @@ export class BoardContainer {
     rows: number[] = Array.from({ length: 8 }, (_, i) => i);
     boardSizeSig = computed(() => this.boardUiService.getBoardSize());
     userFen: string = '';
-    piecesSig: Signal<PieceWithSquare[]> = computed(() => {
-        const pieces = this.store.pieces();
-        const order = this.store.boardSquareOrder();
-        return order.reduce((acc, sq, index) => {
-            const piece = pieces[sq];
-            if (piece) {
-                acc.push({ ...pieces[sq], square: sq, squareName: SquareUtil.getSquareName(sq)});
-            }
-            return acc;
-        }, [] as PieceWithSquare[]);
-    });
+    piecesSig: Signal<Piece[]> = computed(() => Object.values(this.store.pieces()));
 
     isWhiteView = signal(true);
-    lastMove: Move | undefined = this.boardUiService.getLastMove();
-    pickedTileWithPiece: Tile | undefined = this.boardUiService.getPickedTileWithPiece();
+    lastMove?: Move = this.boardUiService.getLastMove();
+    pickedTileWithPiece?: Tile = this.boardUiService.getPickedTileWithPiece();
 
     addBoardSize(): void {
         this.boardUiService.addBoardSize(100);
@@ -81,7 +69,7 @@ export class BoardContainer {
     pieceClicked(pieceWithClickEvent: { piece: PieceComponent, event: MouseEvent }) {
         const { piece, event } = pieceWithClickEvent;
         // this.pieceClicked$.emit(pieceWithClickEvent);
-        console.log("im hee: ", piece.piece().squareName);
+        console.log("im hee: ", piece.piece());
 
         // Clicked the same square
         // if (this.movingPiece()?.piece().square === piece.piece().square) {
@@ -110,20 +98,20 @@ export class BoardContainer {
         // We have square 0 better be explicit just in case.
         if (movingPiece === undefined) return;
 
-        const clickedPos = this.boardUiService.getSquareFromPixelCoords(clickEvent.offsetX, clickEvent.offsetY);
-        const clickedSquare = this.store.boardSquareOrder()[clickedPos];
-        const tiles = this.boardTiles();
-        const fromSquare = movingPiece.piece().square;
-        // If the first tile was empty or the second is the same with the first one
-        // then we just return there isn't any atempt for a move.
-        if (fromSquare === clickedSquare) return;
-
-        BoardUtil.transferPiece(
-            tiles[fromSquare],
-            tiles[clickedSquare],
-            this.store.boardSquareOrder(),
-            movingPiece
-        );
-        this.movingPiece.set(undefined);
+        // const clickedPos = this.boardUiService.getSquareFromPixelCoords(clickEvent.offsetX, clickEvent.offsetY);
+        // const clickedSquare = this.store.boardSquareOrder()[clickedPos];
+        // const tiles = this.boardTiles();
+        // const fromSquare = movingPiece.piece().square;
+        // // If the first tile was empty or the second is the same with the first one
+        // // then we just return there isn't any atempt for a move.
+        // if (fromSquare === clickedSquare) return;
+        //
+        // BoardUtil.transferPiece(
+        //     tiles[fromSquare],
+        //     tiles[clickedSquare],
+        //     this.store.boardSquareOrder(),
+        //     movingPiece
+        // );
+        // this.movingPiece.set(undefined);
     }
 }

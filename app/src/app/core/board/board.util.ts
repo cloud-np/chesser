@@ -1,26 +1,6 @@
-import { PieceComponent } from "../piece/piece.component"
-import { PieceUtil } from "../piece/piece.util"
-import { Tile } from "../tile/tile.model"
-import { TileUtil } from "../tile/tile.util"
-import { Square } from "../types"
+import { Pos } from "../types"
 
 export namespace BoardUtil {
-    export const getRowBasedOnSquare = (square: Square) =>
-        Math.floor(square / 8)
-
-    export const getColBasedOnSquare = (square: Square) =>
-        square % 8
-
-    export const getCoordsBasedOnSquare = (square: Square) =>
-        [getColBasedOnSquare(square), getRowBasedOnSquare(square)]
-
-    export const getSquareFromPixelCoords = (x: number, y: number, boardSize: number): Square => {
-        const squareSize = boardSize / 8;
-        const col = Math.floor(x / squareSize);
-        const row = Math.floor(y / squareSize);
-        return (row * 8) + col;
-    };
-
     // export const generateTiles = (): Tile[] => (
     //     [...Array(64)].map(sq => {
     //         const changeRowStartingColor = BoardUtil.getRowBasedOnSquare(sq) % 2 === 0 ? 1 : 0;
@@ -29,27 +9,27 @@ export namespace BoardUtil {
     // );
 
 
-    export const transferPiece = (
-        oldTile: Tile,
-        newTile: Tile,
-        squaresOrder: Square[],
-        pieceClicked: PieceComponent,
-    ) => {
+    // export const transferPiece = (
+    //     oldTile: Tile,
+    //     newTile: Tile,
+    //     squaresOrder: Square[],
+    //     pieceClicked: PieceComponent,
+    // ) => {
+    //
+    //     // UI
+    //     const newSquareIndex = squaresOrder.findIndex(square => newTile.piece.square === square);
+    //     pieceClicked.pieceImg.nativeElement.style.transform = BoardUtil.getTranlationForPos(newSquareIndex, pieceClicked.squareSizeSig());
+    //
+    //     // SDK
+    //     // Nice trick but it flashes the actual element because of re-render
+    //     // setTimeout(() => {
+    //     newTile.piece = oldTile.piece;
+    //     oldTile.piece = PieceUtil.empty();
+    //     // }, 0);
+    // }
 
-        // UI
-        const newSquareIndex = squaresOrder.findIndex(square => newTile.piece.square === square);
-        pieceClicked.pieceImg.nativeElement.style.transform = BoardUtil.getTranlationForPos(newSquareIndex, pieceClicked.squareSizeSig());;
-
-        // SDK
-        // Nice trick but it flashes the actual element because of re-render
-        // setTimeout(() => {
-        newTile.piece = oldTile.piece;
-        oldTile.piece = PieceUtil.empty();
-        // }, 0);
-    }
-
-    export const getTranlationForPos = (piecePos: number, squareSize: number): string => {
-        const offsets = BoardUtil.getCoordsBasedOnSquare(piecePos).map(axis => axis * squareSize);
+    export const getTranlationForPos = (piecePos: Pos, squareSize: number): string => {
+        const offsets = piecePos.map(axis => axis * squareSize);
         return `translate(${offsets[0]}px, ${offsets[1]}px)`;
     }
 }

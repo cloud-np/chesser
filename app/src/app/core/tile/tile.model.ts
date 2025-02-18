@@ -1,4 +1,4 @@
-import { Piece } from "../piece/piece.model";
+import { Piece } from "../types";
 
 export interface Tile {
     piece: Piece;

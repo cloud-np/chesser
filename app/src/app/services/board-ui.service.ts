@@ -2,7 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { Move } from '../core/move/move.model';
 import { Tile } from '../core/tile/tile.model';
 import { DEFAULT_BOARD_SIZE, MAX_BOARD_SIZE, MIN_BOARD_SIZE } from '../core/board/board.const';
-import { Square } from '../core/square/square.model';
+import { Pos, Square } from "../core/types";
 
 @Injectable({
     providedIn: 'root'
@@ -30,11 +30,11 @@ export class BoardUiService {
         this.pickedTileWithPieceSig.set(pickedTile);
     }
 
-    getSquareFromPixelCoords(x: number, y: number): Square {
+    getSquareFromPixelCoords(x: number, y: number): Pos {
         const squareSize = this.boardSizeSig() / 8;
         const col = Math.floor(x / squareSize);
         const row = Math.floor(y / squareSize);
-        return (row * 8) + col;
+        return [row * 8, col];
     };
 
     getBoardSize(): number {

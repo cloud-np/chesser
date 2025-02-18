@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, ElementRef, inject, input, output, ViewChild } from '@angular/core';
 import { BoardUiService } from 'src/app/services/board-ui.service';
-import { PieceWithSquare } from '../piece/piece.model';
 import { BoardUtil } from '../board/board.util';
+import {Piece} from "../types";
 
 @Component({
     selector: 'app-piece',
@@ -25,7 +25,7 @@ export class PieceComponent {
 
     // TODO: You pass the Square but you never update it!! ???
     // Why do you even pass it here.
-    piece = input.required<PieceWithSquare>();
+    piece = input.required<Piece>();
     isWhite = input.required<boolean>();
     pieceClicked = output<{ piece: PieceComponent, event: MouseEvent }>();
 
@@ -33,10 +33,10 @@ export class PieceComponent {
 
     imgSrcSig = computed(() => `../../assets/pieces/${this.piece()?.imgName}`);
     colorSig = computed(() => this.isWhite() ? 'white' : 'black');
-    // No need to floor or ceil the provided size should always be a perfectly divied by 8.
+    // No need to floor or ceil the provided size should always be a perfectly divided by 8.
     squareSizeSig = computed(() => this.boardUiService.getBoardSize() / 8);
     squarePosSig = computed(() => {
-        return BoardUtil.getTranlationForPos(this.piece().square, this.squareSizeSig());
+        return BoardUtil.getTranlationForPos(this.piece().pos, this.squareSizeSig());
     });
 
     emitPieceClicked(event: MouseEvent): void {

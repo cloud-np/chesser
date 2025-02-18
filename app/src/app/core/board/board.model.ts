@@ -1,6 +1,4 @@
-import { Piece } from "../piece/piece.model";
-import { Square } from "../square/square.model";
-import { Tile } from "../tile/tile.model";
+import {Piece, Square} from "../types";
 
 export interface BoardState {
     fen: string;

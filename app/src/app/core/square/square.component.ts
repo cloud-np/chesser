@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, ElementRef, inject, input
 import { BoardUiService } from 'src/app/services/board-ui.service';
 import { NgClass, NgIf, NgStyle } from '@angular/common';
 import { BoardUtil } from '../board/board.util';
-import { Square } from './square.model';
+import {Pos, Square} from "../types";
 
 @Component({
     selector: 'app-square',
@@ -17,7 +17,7 @@ export class SquareComponent {
     squareClicked = output<Square>();
     wasSquareSelected = false;
     isWhite = input.required<boolean>();
-    squarePos = input.required<number>();
+    squarePos = input.required<Pos>();
     square = input.required<Square>();
 
     @ViewChild('pieceImage', { static: false }) pieceImage?: ElementRef<HTMLImageElement>;
@@ -26,7 +26,7 @@ export class SquareComponent {
     // No need to floor or ceil the provided size should always be a perfectly divied by 8.
     squareSizeSig = computed(() => this.boardUiService.getBoardSize() / 8);
     squarePosSig = computed(() => {
-        const offsets = BoardUtil.getCoordsBasedOnSquare(this.squarePos()).map(axis => axis * this.squareSizeSig());
+        const offsets = this.squarePos().map(axis => axis * this.squareSizeSig());
         return `translate(${offsets[0]}px, ${offsets[1]}px)`;
     });
 

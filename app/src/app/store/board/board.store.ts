@@ -1,12 +1,12 @@
 import { fenTranslator } from "src/app/utils/fen.util";
 import { BoardState } from "../../core/board/board.model";
 import { patchState, signalStore, withComputed, withMethods, withState } from "@ngrx/signals";
-import { DEFAULT_BOARD_SIZE, DEFAULT_FEN, FLIPPED_LITTLE_ENDIAN_RANK_FILE_MAPPING, LITTLE_ENDIAN_RANK_FILE_MAPPING } from "src/app/core/board/board.const";
+import { DEFAULT_BOARD_SIZE, DEFAULT_FEN } from "src/app/core/board/board.const";
 import { Move } from "src/app/core/move/move.model";
 import { computed } from "@angular/core";
 
 
-const isWhiteView = false;
+const isWhiteView = true;
 export const initialBoardState: BoardState = {
     ...fenTranslator(DEFAULT_FEN),
     boardSize: DEFAULT_BOARD_SIZE,
@@ -16,11 +16,11 @@ export const initialBoardState: BoardState = {
 export const BoardStore = signalStore(
     withState(initialBoardState),
     withComputed(({ isWhiteView }) => ({
-        boardSquareOrder: computed(() =>
-            isWhiteView()
-                ? LITTLE_ENDIAN_RANK_FILE_MAPPING
-                : FLIPPED_LITTLE_ENDIAN_RANK_FILE_MAPPING
-        )
+        // boardSquareOrder: computed(() =>
+        //     isWhiteView()
+        //         ? LITTLE_ENDIAN_RANK_FILE_MAPPING
+        //         : FLIPPED_LITTLE_ENDIAN_RANK_FILE_MAPPING
+        // )
     })),
     withMethods((store) => ({
         setFen(fen: string) {
@@ -35,15 +35,16 @@ export const BoardStore = signalStore(
         setBoardSize(boardSize: number) {
             patchState(store, { boardSize });
         },
-        playMove(move: Move) {
-            patchState(store, (state) => ({
-                moves: { ...state.moves, move },
-                tiles: {
-                    ...state.tiles,
-                    [move.from.square]: move.from,
-                    [move.to.square]: move.to
-                }
-            }));
-        }
+        // playMove(move: Move) {
+        //     // TODO: update, we don't have tiles anymore
+        //     patchState(store, (state) => ({
+        //         moves: { ...state.moves, move },
+        //         tiles: {
+        //             ...state.tiles,
+        //             [move.from.square]: move.from,
+        //             [move.to.square]: move.to
+        //         }
+        //     }));
+        // }
     }))
 );
