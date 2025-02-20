@@ -6,7 +6,7 @@ import { Move } from "src/app/core/move/move.model";
 import { computed } from "@angular/core";
 
 
-const isWhiteView = true;
+const isWhiteView = false;
 export const initialBoardState: BoardState = {
     ...fenTranslator(DEFAULT_FEN),
     boardSize: DEFAULT_BOARD_SIZE,

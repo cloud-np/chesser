@@ -8,8 +8,6 @@ import { SquareComponent } from '../square/square.component';
 import { CoordsComponent } from './coords/coords.component';
 import { Move } from '../move/move.model';
 import { PieceComponent } from '../piece/piece.component';
-import { SquareUtil } from '../square/square.util';
-import { BoardUtil } from './board.util';
 import { Subject } from 'rxjs';
 import { Piece, PieceType, Square } from '../types';
 
@@ -18,7 +16,7 @@ import { Piece, PieceType, Square } from '../types';
     templateUrl: './board.container.html',
     standalone: true,
     providers: [BoardStore],
-    imports: [FormsModule, NgStyle, SquareComponent, CoordsComponent, PieceComponent],
+    imports: [FormsModule, NgStyle, CoordsComponent, PieceComponent],
     styleUrls: ['./board.container.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None
@@ -31,7 +29,7 @@ export class BoardContainer {
 
     PieceType = PieceType;
     // Used to track the move that it's happening right now
-    movingPiece = signal<PieceComponent | undefined>(undefined);
+    movingPiece = signal<Piece | undefined>(undefined);
 
     @ViewChildren(PieceComponent) pieces!: QueryList<PieceComponent>;
 
@@ -64,30 +62,31 @@ export class BoardContainer {
         this.store.flipBoard();
     }
 
-    pieceClicked$ = new Subject<{ piece: PieceComponent, event: MouseEvent }>();
+    pieceClicked$ = new Subject<{ piece: Piece, event: MouseEvent }>();
 
-    pieceClicked(pieceWithClickEvent: { piece: PieceComponent, event: MouseEvent }) {
+    pieceClicked(pieceWithClickEvent: { piece: Piece, event: MouseEvent }) {
         const { piece, event } = pieceWithClickEvent;
+        event.stopPropagation();
+
         // this.pieceClicked$.emit(pieceWithClickEvent);
-        console.log("im hee: ", piece.piece());
+        console.log("!!", piece);
+        const movingPiece = this.movingPiece();
+
+        if (!movingPiece) {
+            this.movingPiece.set(piece);
+            return;
+        }
 
         // Clicked the same square
-        // if (this.movingPiece()?.piece().square === piece.piece().square) {
-        //     return;
-        // }
-
-
-        // if (this.movingPiece() === undefined) {
-        //     this.movingPiece.set(piece);
-        //     return;
-        // }
+        if (movingPiece.square === piece.square) {
+            return;
+        }
 
         // const clickedPos = this.boardUiService.getSquareFromPixelCoords(event.offsetX, event.offsetY);
         // const clickedSquare = this.store.boardSquareOrder()[clickedPos];
         // this.movingPiece()!.piece().square = clickedSquare;
 
-        event.stopPropagation();
-        this.movingPiece.set(piece);
+        this.movingPiece.set(undefined);
         // We do not want to propagete the event to board container
         // because it will register another event there for the square clicked.
 
@@ -97,6 +96,8 @@ export class BoardContainer {
         const movingPiece = this.movingPiece();
         // We have square 0 better be explicit just in case.
         if (movingPiece === undefined) return;
+
+        console.log("!! click event: ", movingPiece, clickEvent.currentTarget?.getBoundingClientRect());
 
         // const clickedPos = this.boardUiService.getSquareFromPixelCoords(clickEvent.offsetX, clickEvent.offsetY);
         // const clickedSquare = this.store.boardSquareOrder()[clickedPos];

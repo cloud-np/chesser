@@ -20,7 +20,7 @@ export const fenTranslator = (fen: string): Omit<BoardState, 'boardSize' | 'isWh
             // TODO: We will need to change this to BitBoard represantion so we can swap between White/Black easily OR
             // we will need to make a swap func I assume.
             // NOTE: Not needed most likely. But it would be interesting to see this representation in js.
-            const square = SquareUtil.posToSquare([rank, file]);
+            const square = SquareUtil.posToSquare([file, rank]);
             const piece = PieceUtil.createPiece(ch, square);
             if (piece.type !== PieceType.Empty) {
                 // const tile = tiles[square];

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, ElementRef, inject, input, output, ViewChild } from '@angular/core';
 import { BoardUiService } from 'src/app/services/board-ui.service';
 import { BoardUtil } from '../board/board.util';
-import {Piece} from "../types";
+import { Piece } from "../types";
 
 @Component({
     selector: 'app-piece',
@@ -27,7 +27,7 @@ export class PieceComponent {
     // Why do you even pass it here.
     piece = input.required<Piece>();
     isWhite = input.required<boolean>();
-    pieceClicked = output<{ piece: PieceComponent, event: MouseEvent }>();
+    pieceClicked = output<{ piece: Piece, event: MouseEvent }>();
 
     @ViewChild('pieceImg', { static: false }) pieceImg!: ElementRef<HTMLImageElement>;
 
@@ -40,6 +40,6 @@ export class PieceComponent {
     });
 
     emitPieceClicked(event: MouseEvent): void {
-        this.pieceClicked.emit({ piece: this, event: event });
+        this.pieceClicked.emit({ piece: this.piece(), event: event });
     }
 }
