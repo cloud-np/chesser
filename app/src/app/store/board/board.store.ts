@@ -4,6 +4,9 @@ import { patchState, signalStore, withComputed, withMethods, withState } from "@
 import { DEFAULT_BOARD_SIZE, DEFAULT_FEN } from "src/app/core/board/board.const";
 import { Move } from "src/app/core/move/move.model";
 import { computed } from "@angular/core";
+import { Pos } from "src/app/core/types";
+import { BoardUtil } from "src/app/core/board/board.util";
+import { SquareUtil } from "src/app/core/square/square.util";
 
 
 const isWhiteView = false;
@@ -34,6 +37,21 @@ export const BoardStore = signalStore(
         },
         setBoardSize(boardSize: number) {
             patchState(store, { boardSize });
+        },
+        // We don't need to pass the piece, since its pos its unique.
+        updatePiecePos(oldPos: Pos, pos: Pos) {
+            patchState(store, (state) => {
+                const square = SquareUtil.posToSquare(oldPos);
+                return {
+                    pieces: {
+                        ...state.pieces,
+                        [square]: {
+                            ...state.pieces[square],
+                            pos
+                        }
+                    }
+                }
+            });
         },
         // playMove(move: Move) {
         //     // TODO: update, we don't have tiles anymore

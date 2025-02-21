@@ -4,7 +4,6 @@ import { BoardStore } from 'src/app/store/board/board.store';
 import { Tile } from '../tile/tile.model';
 import { NgStyle } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { SquareComponent } from '../square/square.component';
 import { CoordsComponent } from './coords/coords.component';
 import { Move } from '../move/move.model';
 import { PieceComponent } from '../piece/piece.component';
@@ -31,7 +30,7 @@ export class BoardContainer {
     // Used to track the move that it's happening right now
     movingPiece = signal<Piece | undefined>(undefined);
 
-    @ViewChildren(PieceComponent) pieces!: QueryList<PieceComponent>;
+    @ViewChildren(PieceComponent) pieces!: QueryList<Piece>;
 
     rows: number[] = Array.from({ length: 8 }, (_, i) => i);
     boardSizeSig = computed(() => this.boardUiService.getBoardSize());
@@ -94,10 +93,13 @@ export class BoardContainer {
 
     squareClicked(clickEvent: MouseEvent) {
         const movingPiece = this.movingPiece();
+
         // We have square 0 better be explicit just in case.
         if (movingPiece === undefined) return;
 
-        console.log("!! click event: ", movingPiece, clickEvent.currentTarget?.getBoundingClientRect());
+        console.log("!! click event: ", movingPiece);
+        const newPiecePos = this.boardUiService.getSquareFromPixelCoords(clickEvent.offsetY, clickEvent.offsetX);
+        this.store.updatePiecePos(movingPiece.pos, newPiecePos);
 
         // const clickedPos = this.boardUiService.getSquareFromPixelCoords(clickEvent.offsetX, clickEvent.offsetY);
         // const clickedSquare = this.store.boardSquareOrder()[clickedPos];

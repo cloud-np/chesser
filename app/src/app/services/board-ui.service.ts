@@ -34,7 +34,7 @@ export class BoardUiService {
         const squareSize = this.boardSizeSig() / 8;
         const col = Math.floor(x / squareSize);
         const row = Math.floor(y / squareSize);
-        return [row * 8, col];
+        return [row, col];
     };
 
     getBoardSize(): number {
