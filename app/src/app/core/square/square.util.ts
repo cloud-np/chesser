@@ -27,4 +27,7 @@ export namespace SquareUtil {
 
         return [x, y];
     }
+
+    export const isPosEqual = (pos1: Pos, pos2: Pos): boolean =>
+        pos1[0] === pos2[0] && pos1[1] === pos2[1];
 }

@@ -1,3 +1,4 @@
+import { signal } from "@angular/core";
 import { SquareUtil } from "../square/square.util";
 import { Piece, PieceType, Square } from "../types";
 
@@ -10,7 +11,7 @@ export namespace PieceUtil {
                     type: PieceType.Pawn,
                     imgName: "wp.png",
                     isWhite: true,
-                    pos: SquareUtil.squareToPos(square),
+                    posSig: signal(SquareUtil.squareToPos(square)),
                     square
                 };
             case "R":
@@ -18,7 +19,7 @@ export namespace PieceUtil {
                     type: PieceType.Rook,
                     imgName: "wr.png",
                     isWhite: true,
-                    pos: SquareUtil.squareToPos(square),
+                    posSig: signal(SquareUtil.squareToPos(square)),
                     square
                 };
             case "N":
@@ -26,7 +27,7 @@ export namespace PieceUtil {
                     type: PieceType.Knight,
                     imgName: "wn.png",
                     isWhite: true,
-                    pos: SquareUtil.squareToPos(square),
+                    posSig: signal(SquareUtil.squareToPos(square)),
                     square
                 };
             case "B":
@@ -34,7 +35,7 @@ export namespace PieceUtil {
                     type: PieceType.Bishop,
                     imgName: "wb.png",
                     isWhite: true,
-                    pos: SquareUtil.squareToPos(square),
+                    posSig: signal(SquareUtil.squareToPos(square)),
                     square
                 };
             case "Q":
@@ -42,7 +43,7 @@ export namespace PieceUtil {
                     type: PieceType.Queen,
                     imgName: "wq.png",
                     isWhite: true,
-                    pos: SquareUtil.squareToPos(square),
+                    posSig: signal(SquareUtil.squareToPos(square)),
                     square
                 };
             case "K":
@@ -50,7 +51,7 @@ export namespace PieceUtil {
                     type: PieceType.King,
                     imgName: "wk.png",
                     isWhite: true,
-                    pos: SquareUtil.squareToPos(square),
+                    posSig: signal(SquareUtil.squareToPos(square)),
                     square
                 };
             case "p":
@@ -58,7 +59,7 @@ export namespace PieceUtil {
                     type: PieceType.Pawn,
                     imgName: "bp.png",
                     isWhite: false,
-                    pos: SquareUtil.squareToPos(square),
+                    posSig: signal(SquareUtil.squareToPos(square)),
                     square
                 };
             case "r":
@@ -66,7 +67,7 @@ export namespace PieceUtil {
                     type: PieceType.Rook,
                     imgName: "br.png",
                     isWhite: false,
-                    pos: SquareUtil.squareToPos(square),
+                    posSig: signal(SquareUtil.squareToPos(square)),
                     square
                 };
             case "n":
@@ -74,7 +75,7 @@ export namespace PieceUtil {
                     type: PieceType.Knight,
                     imgName: "bn.png",
                     isWhite: false,
-                    pos: SquareUtil.squareToPos(square),
+                    posSig: signal(SquareUtil.squareToPos(square)),
                     square
                 };
             case "b":
@@ -82,7 +83,7 @@ export namespace PieceUtil {
                     type: PieceType.Bishop,
                     imgName: "bb.png",
                     isWhite: false,
-                    pos: SquareUtil.squareToPos(square),
+                    posSig: signal(SquareUtil.squareToPos(square)),
                     square
                 };
             case "q":
@@ -90,7 +91,7 @@ export namespace PieceUtil {
                     type: PieceType.Queen,
                     imgName: "bq.png",
                     isWhite: false,
-                    pos: SquareUtil.squareToPos(square),
+                    posSig: signal(SquareUtil.squareToPos(square)),
                     square
                 };
             case "k":
@@ -98,7 +99,7 @@ export namespace PieceUtil {
                     type: PieceType.King,
                     imgName: "bk.png",
                     isWhite: false,
-                    pos: SquareUtil.squareToPos(square),
+                    posSig: signal(SquareUtil.squareToPos(square)),
                     square
                 };
             default:

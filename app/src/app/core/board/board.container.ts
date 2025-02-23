@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, QueryList, signal, Signal, ViewChildren, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal, Signal, ViewEncapsulation } from '@angular/core';
 import { BoardUiService } from 'src/app/services/board-ui.service';
 import { BoardStore } from 'src/app/store/board/board.store';
 import { Tile } from '../tile/tile.model';
@@ -9,6 +9,7 @@ import { Move } from '../move/move.model';
 import { PieceComponent } from '../piece/piece.component';
 import { Subject } from 'rxjs';
 import { Piece, PieceType, Square } from '../types';
+import { SquareUtil } from '../square/square.util';
 
 @Component({
     selector: 'app-board',
@@ -30,12 +31,12 @@ export class BoardContainer {
     // Used to track the move that it's happening right now
     movingPiece = signal<Piece | undefined>(undefined);
 
-    @ViewChildren(PieceComponent) pieces!: QueryList<Piece>;
-
     rows: number[] = Array.from({ length: 8 }, (_, i) => i);
     boardSizeSig = computed(() => this.boardUiService.getBoardSize());
     userFen: string = '';
-    piecesSig: Signal<Piece[]> = computed(() => Object.values(this.store.pieces()));
+    piecesSig: Signal<Piece[]> = computed(() =>
+        this.store.pieces()
+    );
 
     isWhiteView = signal(true);
     lastMove?: Move = this.boardUiService.getLastMove();
@@ -65,12 +66,11 @@ export class BoardContainer {
 
     pieceClicked(pieceWithClickEvent: { piece: Piece, event: MouseEvent }) {
         const { piece, event } = pieceWithClickEvent;
+        // We do not want to propagete the event to board container
+        // because it will register another event there for the square clicked.
         event.stopPropagation();
 
-        // this.pieceClicked$.emit(pieceWithClickEvent);
-        console.log("!!", piece);
         const movingPiece = this.movingPiece();
-
         if (!movingPiece) {
             this.movingPiece.set(piece);
             return;
@@ -81,25 +81,22 @@ export class BoardContainer {
             return;
         }
 
-        // const clickedPos = this.boardUiService.getSquareFromPixelCoords(event.offsetX, event.offsetY);
-        // const clickedSquare = this.store.boardSquareOrder()[clickedPos];
-        // this.movingPiece()!.piece().square = clickedSquare;
+        // Piece is to be captured
+        if (movingPiece.isWhite !== piece.isWhite) {
+            this.store.pieceCaptured(movingPiece, piece);
+        }
 
         this.movingPiece.set(undefined);
-        // We do not want to propagete the event to board container
-        // because it will register another event there for the square clicked.
-
     }
 
     squareClicked(clickEvent: MouseEvent) {
         const movingPiece = this.movingPiece();
 
-        // We have square 0 better be explicit just in case.
         if (movingPiece === undefined) return;
 
-        console.log("!! click event: ", movingPiece);
         const newPiecePos = this.boardUiService.getSquareFromPixelCoords(clickEvent.offsetY, clickEvent.offsetX);
-        this.store.updatePiecePos(movingPiece.pos, newPiecePos);
+        console.log("!! squareClicked", SquareUtil.posToSquare(movingPiece.posSig()), SquareUtil.posToSquare(newPiecePos));
+        this.store.updatePiecePos(movingPiece.posSig(), newPiecePos);
 
         // const clickedPos = this.boardUiService.getSquareFromPixelCoords(clickEvent.offsetX, clickEvent.offsetY);
         // const clickedSquare = this.store.boardSquareOrder()[clickedPos];
@@ -115,6 +112,6 @@ export class BoardContainer {
         //     this.store.boardSquareOrder(),
         //     movingPiece
         // );
-        // this.movingPiece.set(undefined);
+        this.movingPiece.set(undefined);
     }
 }

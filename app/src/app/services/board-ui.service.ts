@@ -2,7 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { Move } from '../core/move/move.model';
 import { Tile } from '../core/tile/tile.model';
 import { DEFAULT_BOARD_SIZE, MAX_BOARD_SIZE, MIN_BOARD_SIZE } from '../core/board/board.const';
-import { Pos, Square } from "../core/types";
+import { Pos } from "../core/types";
 
 @Injectable({
     providedIn: 'root'
@@ -58,7 +58,7 @@ export class BoardUiService {
             if (posNonDividableSize <= MIN_BOARD_SIZE) return boardSize;
 
             return posNonDividableSize + (posNonDividableSize % 8);
-       });
+        });
     }
 
 }

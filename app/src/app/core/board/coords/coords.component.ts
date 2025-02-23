@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, QueryList, signal, Signal, ViewChildren, ViewEncapsulation } from '@angular/core';
-import { NgClass, NgFor, NgStyle } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, input, ViewEncapsulation } from '@angular/core';
 
 @Component({
     selector: 'app-coords',
@@ -12,7 +11,6 @@ import { NgClass, NgFor, NgStyle } from '@angular/common';
     `,
     standalone: true,
     providers: [],
-    imports: [NgFor, NgClass, NgStyle],
     styleUrls: ['./coords.component.scss'],
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,

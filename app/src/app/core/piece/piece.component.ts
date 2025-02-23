@@ -21,25 +21,26 @@ import { Piece } from "../types";
 })
 export class PieceComponent {
     private boardUiService: BoardUiService = inject(BoardUiService);
+    private elementRef: ElementRef<HTMLElement> = inject(ElementRef);
     wasSquareSelected = false;
 
     // TODO: You pass the Square but you never update it!! ???
     // Why do you even pass it here.
     piece = input.required<Piece>();
-    isWhite = input.required<boolean>();
     pieceClicked = output<{ piece: Piece, event: MouseEvent }>();
 
     @ViewChild('pieceImg', { static: false }) pieceImg!: ElementRef<HTMLImageElement>;
 
     imgSrcSig = computed(() => `../../assets/pieces/${this.piece()?.imgName}`);
-    colorSig = computed(() => this.isWhite() ? 'white' : 'black');
+    colorSig = computed(() => this.piece().isWhite ? 'white' : 'black');
     // No need to floor or ceil the provided size should always be a perfectly divided by 8.
     squareSizeSig = computed(() => this.boardUiService.getBoardSize() / 8);
     squarePosSig = computed(() => {
-        return BoardUtil.getTranlationForPos(this.piece().pos, this.squareSizeSig());
+        return BoardUtil.getTranlationForPos(this.piece().posSig(), this.squareSizeSig());
     });
 
     emitPieceClicked(event: MouseEvent): void {
-        this.pieceClicked.emit({ piece: this.piece(), event: event });
+        this.pieceClicked.emit({ piece: this.piece(), event });
     }
+
 }

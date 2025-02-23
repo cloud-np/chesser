@@ -1,8 +1,8 @@
-import {Piece, Square} from "../types";
+import { Piece } from "../types";
 
 export interface BoardState {
     fen: string;
-    pieces: Record<Square, Piece>;
+    pieces: Piece[];
     deadPieces: string[];
     moves: string[];
     boardSize: number;

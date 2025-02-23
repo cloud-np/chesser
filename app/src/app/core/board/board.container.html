@@ -5,26 +5,23 @@
         (click)="squareClicked($event)"
     >
         <div class="board-tiles">
-            @for (piece of piecesSig(); track $index) {
+            @for (piece of piecesSig(); track piece.square) {
                 <!-- Since our positions are correctly ordered in a 1D array, the corrisponding index will be the correct position for the tile -->
-                @if (piece.type !== PieceType.Empty) {
-                    <app-piece
-                        [piece]="piece"
-                        [isWhite]="piece.isWhite"
-                        [attr.name]="piece.square"
-                        (pieceClicked)="pieceClicked($event)"
-                    >
-                    </app-piece>
-                }
-                <!-- <app-square
-                    #sq
-                    [squarePos]="$index"
-                    [square]="tile.square"
-                    [isWhite]="tile.isWhite"
-                    [attr.name]="tile.squareName"
+                <app-piece
+                    [piece]="piece"
+                    [attr.name]="piece.square"
+                    (pieceClicked)="pieceClicked($event)"
                 >
-                </app-square> -->
+                </app-piece>
             }
+            <!-- <app-square
+                #sq
+                [squarePos]="$index"
+                [square]="tile.square"
+                [isWhite]="tile.isWhite"
+                [attr.name]="tile.squareName"
+            >
+            </app-square> -->
         </div>
         <app-coords
             [isWhiteView]="store.isWhiteView()"

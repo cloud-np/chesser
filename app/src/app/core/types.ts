@@ -1,3 +1,5 @@
+import { WritableSignal } from "@angular/core";
+
 export const files = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'] as const;
 export const ranks = ['1', '2', '3', '4', '5', '6', '7', '8'] as const;
 export type Square = 'a0' | `${File}${Rank}`;
@@ -21,5 +23,5 @@ export interface Piece {
     imgName: string;
     isWhite: boolean;
     square: Square;
-    pos: Pos;
+    posSig: WritableSignal<Pos>;
 };
