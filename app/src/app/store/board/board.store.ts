@@ -42,18 +42,6 @@ export const BoardStore = signalStore(
                 const piece = state.pieces.find(p => p.square === oldSquare);
                 piece!.posSig.set(pos);
                 piece!.square = newSquare;
-                // console.log('!! updatePiecePos', square, state.pieces[square]);
-                // // Invalid pos or no piece on the square
-                // if (!state.pieces[square]) {
-                //     return state;
-                // }
-                // const pieces: any = {};
-                // Object.entries(state.pieces).forEach(([square, piece]) => {
-                //     if (square === oldSquare) {
-                //         return;
-                //     }
-                //     pieces[square] = piece;
-                // });
                 return state;
             });
         },

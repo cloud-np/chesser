@@ -4,6 +4,7 @@ import { SquareUtil } from "../core/square/square.util";
 import { PieceType, Piece, Pos } from "../core/types";
 
 export const fenDecoder = (fen: string, isWhiteView = true): Omit<BoardState, 'boardSize' | 'isWhiteView' | 'boardSquareOrder'> => {
+    console.log('!! fen', fen);
     let rank = isWhiteView ? 0 : 7;
     let file = 0;
     const pieces: Piece[] = [];
